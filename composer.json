@@ -1,11 +1,19 @@
 {
     "description": "Allows inlining and optimising styles for components in Neos CMS",
-    "type": "neos-package",
+    "type": "neos-plugin",
     "name": "shel/critical-css",
-    "license": "GPL-3.0",
+    "license": "GPL-3.0-or-later",
     "require": {
         "neos/neos": "^4.3 || ^5.0"
     },
+    "authors": [
+      {
+        "name": "Sebastian Helzle",
+        "email": "support@helzle.it",
+        "homepage": "https://www.helzle.it",
+        "role": "Developer"
+      }
+    ],
     "autoload": {
         "psr-4": {
             "Shel\\CriticalCSS\\": "Classes/"
