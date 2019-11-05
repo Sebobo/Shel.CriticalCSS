@@ -1,0 +1,3 @@
+prototype(Neos.Neos:Page) {
+  @process.inlineStyles = Shel.CriticalCSS:StyleCollector
+}

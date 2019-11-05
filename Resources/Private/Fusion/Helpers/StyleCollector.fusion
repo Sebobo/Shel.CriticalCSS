@@ -1,0 +1,4 @@
+prototype(Shel.CriticalCSS:StyleCollector) {
+  @class = 'Shel\\CriticalCSS\\FusionObjects\\StyleCollectorImplementation'
+  content = ${value}
+}

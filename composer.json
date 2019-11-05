@@ -1,0 +1,19 @@
+{
+    "description": "Allows inlining and optimising styles for components in Neos CMS",
+    "type": "neos-package",
+    "name": "shel/critical-css",
+    "license": "GPL-3.0",
+    "require": {
+        "neos/neos": "^4.3 || ^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shel\\CriticalCSS\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Shel.CriticalCSS"
+        }
+    }
+}
