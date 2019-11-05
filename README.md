@@ -51,6 +51,37 @@ as one style tag.
 Be careful when applying the styles not only to one tag but to a group of tags. Then it will
 automatically generate a wrapping tag similar to how the Augmenter in Fusion works.
 
+#### Nesting styles
+
+Again a similar example but with nested styles
+
+    prototype(My.Site:Component.Blockquote) < prototype(Neos.Fusion:Component) {
+        text = ''
+        link = ''
+        
+        renderer = afx`
+            <blockquote>
+                {props.text} 
+                <a href={props.link}>Read more</a>
+            </blockquote>
+        `
+        
+        @process.styles = Shel.CriticalCSS:Styles {
+            font-size = '2em'
+            font-family = 'Comic Sans'
+            padding = '.5rem'
+            a {
+                color: blue;
+                text-decoration: underline;
+            }
+        }
+    }                         
+    
+The resulting HTML will look similar to this:
+
+    <style data-inline>.style--cd7c679e3d{font-size:2m;font-family:Comic Sans;padding:.5rem;}.style--cd7c679e3d a{color:blue;text-decoration:underline;}</style>
+    <blockquote class="style--cd7c679e3d">My text</blockquote>
+
 #### Using multiple styles in one component
 
 To style several parts of a component you can do the following:
