@@ -37,23 +37,48 @@ class StylesImplementation extends JoinImplementation
         $fallbackTagName = $this->fusionValue('fallbackTagName');
         $global = $this->fusionValue('global');
         $sortedChildFusionKeys = $this->sortNestedFusionKeys();
+        $stylesHash = substr(md5(serialize($sortedChildFusionKeys)), 0, 10);
 
-        $styles = '';
-        foreach ($sortedChildFusionKeys as $key) {
-            $fusionValue = $this->fusionValue($key);
-            if ($fusionValue !== null && $fusionValue !== '') {
-                $styles .= $key . ':' . $fusionValue . ';';
+        $styles = $this->renderProperties($global, $stylesHash, $sortedChildFusionKeys);
+        $styleTag = '<style data-inline>' . $styles . '</style>';
+
+        // Don't augment the content, just prepend the style tag
+        if ($global) {
+            return $styleTag . $content;
+        }
+
+        return $styleTag . $this->htmlAugmenter->addAttributes($content, ['class' => 'style--' . $stylesHash],
+                $fallbackTagName);
+    }
+
+    /**
+     * @param bool $global
+     * @param string $hash
+     * @param array $properties
+     * @param string $parentName
+     * @return string
+     */
+    protected function renderProperties(bool $global, string $hash, array $properties, string $parentName = ''): string
+    {
+        $styles = $global ? 'html' : '.style--' . $hash;
+        if ($parentName) {
+            $styles .= ' ' . $parentName;
+        }
+        $styles .= '{';
+        $childrenStyles = [];
+
+        foreach ($properties as $key => $value) {
+            $styleName = $parentName ? $key : $value;
+            $styleValue = $parentName ? $value : $this->fusionValue($styleName);
+            if (is_iterable($styleValue)) {
+                $childrenStyles[] = $this->renderProperties($global, $hash, $styleValue, $parentName . $styleName);
+            } elseif ($styleValue !== null && $styleValue !== '') {
+                $styles .= $styleName . ':' . $styleValue . ';';
             }
         }
 
-        $stylesHash = substr(md5($styles), 0, 10);
-        $className = 'style--' . $stylesHash;
+        $styles .= '}';
 
-        if ($global) {
-            return '<style data-inline>html{' . $styles . '}</style>' . $content;
-        }
-
-        return '<style data-inline>.' . $className . '{' . $styles . '}</style>' .
-            $this->htmlAugmenter->addAttributes($content, ['class' => $className], $fallbackTagName);
+        return $styles . join('', $childrenStyles);
     }
 }
