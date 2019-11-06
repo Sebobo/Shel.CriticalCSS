@@ -1,5 +1,7 @@
 # Adding and combining inline styles for critical CSS in Neos CMS
 
+_This package is in its early stages and doesn't have a 1.0 release yet_
+
 This package provides several helpers to allow adding (dynamic) inline styles to Fusion components in Neos CMS
 and combining them locally or into the head of a html document.
 
@@ -184,3 +186,14 @@ By default the collector is applied as `process` to `Neos.Neos:Page`. You can di
 apply it to any other prototype. The collector will then do the same thing as before and collect all style tags
 but now prepend all of them as one style tag to the prototype the collector was applied to.
  
+### Limitations
+
+#### Inserting new elements in the Neos UI
+
+When working the backend the styles collector will not automatically pick up style blocks from newly inserted elements.
+This might cause some issues when the added elements are somehow treated with Javascript like in Sliders.
+
+#### Caching
+
+The styles collector might not always pick up dynamically cached elements as they will add their own styleblock
+without triggering a refresh of the page cache.
