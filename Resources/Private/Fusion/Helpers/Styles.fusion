@@ -1,6 +1,6 @@
 prototype(Shel.CriticalCSS:Styles) < prototype(Neos.Fusion:DataStructure) {
     @class = 'Shel\\CriticalCSS\\FusionObjects\\StylesImplementation'
-    tagContent = ${value}
-    fallbackTagName = 'div'
-    global = false
+    @content = ${value}
+    @fallbackTagName = 'div'
+    @selector = false
 }

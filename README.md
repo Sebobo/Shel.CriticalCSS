@@ -11,6 +11,16 @@ This allows you to keep styles together with a component in one file and also be
 A good use case for this is to define inline styles for your critical CSS that should be loaded instantly when
 the site is shown and defer loading other styles that are not needed immediately.
 
+Support:
+
+* Scoped styles
+* Global styles with specific selectors
+* Automatic style merging into document head
+* Style nesting
+* `@media` and `@supports` queries
+
+The inspiration for this package came from [SvelteJS](https://svelte.dev) and [JSS](https://cssinjs.org).
+
 ## Installation
 
 Run this in your site package:
@@ -18,7 +28,7 @@ Run this in your site package:
     composer require --no-update shel/critical-css
     
 Then run `composer update` in your project root.
-
+                                        
 ## Usage
 
 ### Adding inline styles
@@ -73,8 +83,8 @@ Again a similar example but with nested styles
             font-family = 'Comic Sans'
             padding = '.5rem'
             a {
-                color: blue;
-                text-decoration: underline;
+                color = 'blue'
+                text-decoration = 'underline'
             }
         }
     }                         

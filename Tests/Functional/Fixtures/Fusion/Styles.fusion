@@ -1,0 +1,75 @@
+prototype(Shel.CriticalCSS:Styles).@class = 'Shel\\CriticalCSS\\FusionObjects\\StylesImplementation'
+prototype(Neos.Fusion:DataStructure).@class = 'Neos\\Fusion\\FusionObjects\\DataStructureImplementation'
+prototype(Neos.Fusion:TestRenderer).@class = 'Neos\\Fusion\\Tests\\Functional\\View\\Fixtures\\TestRenderer'
+
+styles.basic = Shel.CriticalCSS:Styles {
+    @content = '<div>foo</div>'
+    color = 'green'
+    font-size = '12px'
+}
+
+styles.hashCase1 = Shel.CriticalCSS:Styles {
+    @content = '<div>foo</div>'
+    color = 'blue'
+}
+
+styles.hashCase2 = Shel.CriticalCSS:Styles {
+    @content = '<div>foo</div>'
+    color = 'green'
+}
+
+styles.nested = Shel.CriticalCSS:Styles {
+    @content = '<div>foo <strong>bar</strong></div>'
+    color = 'blue'
+    strong = Neos.Fusion:DataStructure {
+        font-weight = 'bold'
+    }
+}
+
+styles.selector = Shel.CriticalCSS:Styles {
+    @content = '<html><body>foo</body></html>'
+    @selector = 'body'
+    font-family = 'Comic Sans'
+}
+
+styles.mediaQuery = Shel.CriticalCSS:Styles {
+    @content = '<div>foo</div>'
+    color = 'blue'
+    '@media all' = Neos.Fusion:DataStructure {
+        color = 'green'
+    }
+}
+
+styles.mediaQueryWithNesting = Shel.CriticalCSS:Styles {
+    @content = '<div>foo <strong>bar</strong></div>'
+    color = 'blue'
+    '@media all' = Neos.Fusion:DataStructure {
+        color = 'green'
+
+        strong = Neos.Fusion:DataStructure {
+            color = 'yellow'
+        }
+    }
+}
+
+styles.nestedMediaQueries = Shel.CriticalCSS:Styles {
+    @content = '<div>foo <strong>bar</strong></div>'
+    '@media print' = Neos.Fusion:DataStructure {
+        strong = Neos.Fusion:DataStructure {
+            display = 'none'
+        }
+        '@media (max-width:12cm)' = Neos.Fusion:DataStructure {
+            strong = Neos.Fusion:DataStructure {
+                display = 'block'
+            }
+        }
+    }
+}
+
+styles.supportsQuery = Shel.CriticalCSS:Styles {
+    @content = '<div>foo</div>'
+    display = 'block'
+    '@supports (display:flex)' = Neos.Fusion:DataStructure {
+        display = 'flex'
+    }
+}
