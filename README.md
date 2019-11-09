@@ -1,5 +1,10 @@
 # Adding and combining inline styles for critical CSS in Neos CMS
 
+[![Latest Stable Version](https://poser.pugx.org/Sebobo/Shel.CriticalCSS/v/stable)](https://packagist.org/packages/Sebobo/Shel.CriticalCSS)
+[![License](https://poser.pugx.org/Sebobo/Shel.CriticalCSS/license)](https://packagist.org/packages/Sebobo/Shel.CriticalCSS)
+[![Travis Build Status](https://travis-ci.org/Sebobo/Shel.CriticalCSS.svg?branch=master)](https://travis-ci.org/Sebobo/Shel.CriticalCSS)
+[![StyleCI](https://styleci.io/repos/219770230/shield?style=flat)](https://styleci.io/repos/219770230)
+
 _This package is in its early stages and doesn't have a 1.0 release yet_
 
 This package provides several helpers to allow adding (dynamic) inline styles to Fusion components in Neos CMS
