@@ -1,7 +1,7 @@
 # Adding and combining inline styles for critical CSS in Neos CMS
 
-[![Latest Stable Version](https://poser.pugx.org/Sebobo/Shel.CriticalCSS/v/stable)](https://packagist.org/packages/Sebobo/Shel.CriticalCSS)
-[![License](https://poser.pugx.org/Sebobo/Shel.CriticalCSS/license)](https://packagist.org/packages/Sebobo/Shel.CriticalCSS)
+[![Latest Stable Version](https://poser.pugx.org/shel/critical-css/v/stable)](https://packagist.org/packages/shel/critical-css)
+[![License](https://poser.pugx.org/shel/critical-css/license)](https://packagist.org/packages/shel/critical-css)
 [![Travis Build Status](https://travis-ci.org/Sebobo/Shel.CriticalCSS.svg?branch=master)](https://travis-ci.org/Sebobo/Shel.CriticalCSS)
 [![StyleCI](https://styleci.io/repos/219770230/shield?style=flat)](https://styleci.io/repos/219770230)
 
