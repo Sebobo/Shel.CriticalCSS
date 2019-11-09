@@ -1,0 +1,23 @@
+language: php
+sudo: false
+git:
+    depth: 5
+    submodules: false
+matrix:
+    include:
+        - php: 7.2
+
+before_install:
+    - export FLOW_TARGET_VERSION=5.3
+    - cd ..
+    - git clone https://github.com/neos/flow-base-distribution.git -b ${FLOW_TARGET_VERSION}
+    - cd flow-base-distribution
+    - composer require --no-update --no-interaction shel/critical-css
+install:
+    - composer install --no-interaction
+    - cd ..
+    - rm -rf flow-base-distribution/Packages/Plugins/Shel.CriticalCSS
+    - mv Shel.CriticalCSS flow-base-distribution/Packages/Plugins/Shel.CriticalCSS
+    - cd flow-base-distribution
+script:
+    - bin/phpunit --colors -c Build/BuildEssentials/PhpUnit/FunctionalTests.xml Packages/Plugins/Shel.CriticalCSS/Tests/Functional/*
