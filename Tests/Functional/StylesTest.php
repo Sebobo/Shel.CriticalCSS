@@ -7,22 +7,11 @@ namespace Shel\CriticalCSS\Tests\Functional;
  * This file is part of the Shel.CriticalCSS package.
  */
 
-use Neos\Fusion\Tests\Functional\FusionObjects\AbstractFusionObjectTest;
-
 /**
  * Testcase for the styles object
  */
-class StylesTest extends AbstractFusionObjectTest
+class StylesTest extends AbstractStyleTest
 {
-    protected function buildView()
-    {
-        $view = parent::buildView();
-        $view->setPackageKey('Shel.CriticalCSS');
-        $view->setFusionPathPattern(__DIR__ . '/Fixtures/Fusion');
-        $view->assign('fixtureDirectory', __DIR__ . '/Fixtures/');
-        return $view;
-    }
-
     /**
      * @test
      */

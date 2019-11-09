@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Shel\CriticalCSS\FusionObjects;
 
+/*
+ * This file is part of the Shel.CriticalCSS package.
+ */
+
 use Neos\Fusion\FusionObjects\AbstractFusionObject;
 
 /**
