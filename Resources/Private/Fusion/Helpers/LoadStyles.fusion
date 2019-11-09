@@ -1,0 +1,5 @@
+prototype(Shel.CriticalCSS:LoadStyles) {
+    @class = 'Shel\\CriticalCSS\\FusionObjects\\LoadStylesImplementation'
+    content = ${value ? value : ''}
+    path = ''
+}

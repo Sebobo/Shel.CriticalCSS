@@ -214,6 +214,34 @@ It's also possible to use custom selectors to target the `html`, `body` or all t
         }
     }
 
+#### Insert styles from a file
+
+The package has a Fusion helper to insert styles inline from a file.
+Do scoping is done, but the style tag will be picked up by the style collector.
+
+    prototype(My.Site:Component.Test) < prototype(Neos.Fusion:Component) {
+        text = ''
+        
+        renderer = afx`
+            <Shel.CriticalCSS:LoadStyles path="ressource://My.Site/Private/Fusion/Components/Test/style.css"/>        
+            <div>{props.text}</div>
+        `
+    }
+    
+Also works as `process`:                                                         
+
+    prototype(My.Site:Component.Test) < prototype(Neos.Fusion:Component) {
+        text = ''
+        
+        renderer = afx`    
+            <div>{props.text}</div>
+        `
+        
+        @process.addStyles = Shel.CriticalCSS:LoadStyles {
+            path="ressource://My.Site/Private/Fusion/Components/Test/style.css"
+        }    
+    }
+
 #### Other examples
 
 You can also take a look at the [functional test fixtures](Tests/Functional/Fixtures/Fusion/Styles.fusion) to see the verified use cases.
