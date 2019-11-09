@@ -7,7 +7,6 @@ namespace Shel\CriticalCSS\FusionObjects;
  * This file is part of the Shel.CriticalCSS package.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\FluidAdaptor\Core\ViewHelper\Exception\InvalidVariableException;
 use Neos\Fusion\FusionObjects\AbstractFusionObject;
 
