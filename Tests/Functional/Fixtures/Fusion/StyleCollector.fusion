@@ -1,0 +1,32 @@
+prototype(Shel.CriticalCSS:StyleCollector).@class = 'Shel\\CriticalCSS\\FusionObjects\\StyleCollectorImplementation'
+prototype(Neos.Fusion:TestRenderer).@class = 'Neos\\Fusion\\Tests\\Functional\\View\\Fixtures\\TestRenderer'
+
+styleCollector.collectMultipleStyles = Shel.CriticalCSS:StyleCollector {
+    content = '
+        <html>
+            <head>
+                <title>Test</title>
+            </head>
+            <body>
+                <style data-inline>.foo{color:blue}</style>
+                <div class="foo">foo</div>
+                <style data-inline>.bar{color:green}</style>
+                <div class="bar">bar</div>
+            </body>
+        </html>'
+}
+
+styleCollector.removeDuplicatesStyles = Shel.CriticalCSS:StyleCollector {
+    content = '
+        <html>
+            <head>
+                <title>Test</title>
+            </head>
+            <body>
+                <style data-inline>.foo{color:blue}</style>
+                <div class="foo">foo</div>
+                <style data-inline>.foo{color:blue}</style>
+                <div class="foo">foo</div>
+            </body>
+        </html>'
+}
