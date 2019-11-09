@@ -189,6 +189,29 @@ And when you then have a nested component like this:
     
 I can recommend to use my [colorpicker](https://github.com/Sebobo/Shel.Neos.ColorPicker) for Neos CMS when
 allowing an editor to define a theme and then put those values into CSS variables. 
+
+#### Custom selectors
+
+It's also possible to use custom selectors to target the `html`, `body` or all tags `*`:
+ 
+    prototype(Neos.Neos:Page) {
+        body {                  
+            @process.globalStyles = Neos.Fusion:Join {
+                all = Shel.CriticalCSS:Styles {
+                    selector = '*'
+                    box-sizing = 'border-box'
+                }
+                body = Shel.CriticalCSS:Styles {
+                    selector = 'body'
+                    background-color = 'blue'
+                }
+            }
+        }
+    }
+
+#### Other examples
+
+You can also take a look at the [functional test fixtures](Tests/Functional/Fixtures/Fusion/Styles.fusion) to see the verified use cases.
                
 ### Modifying the collector behaviour
 
