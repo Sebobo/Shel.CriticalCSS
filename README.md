@@ -20,7 +20,7 @@ Support:
 
 * Scoped styles
 * Global styles with specific selectors
-* Automatic style merging into document head
+* Automatic style merging into document head via http component
 * Style nesting
 * `@media` and `@supports` queries
 
@@ -246,11 +246,28 @@ Also works as `process`:
 
 You can also take a look at the [functional test fixtures](Tests/Functional/Fixtures/Fusion/Styles.fusion) to see the verified use cases.
                
-### Modifying the collector behaviour
+### Modifying the styles collector behaviour
 
-By default the collector is applied as `process` to `Neos.Neos:Page`. You can disable this and instead
-apply it to any other prototype. The collector will then do the same thing as before and collect all style tags
-but now prepend all of them as one style tag to the prototype the collector was applied to.
+By default the collector is applied as http component at the end of the request chain. 
+It will merge all inline styles generated with this package into one style tag in the html head.
+Duplicates are removed during this process.
+You can disable this behaviour with this setting: 
+
+    Shel:
+        CriticalCSS:
+            mergeStylesComponent:
+                enabled: false
+                
+#### Fusion based style collector                
+                
+This package contains a second collection method via Fusion. 
+The `Shel.CriticalCSS:StyleCollector` helper can be used in a similar way as `process` to merge 
+all inline style tags into one. When doing this inside the DOM the style tag will be prepended wherever
+it is applied to. When applying it to the whole document, it will also merge the styles into the html head.
+
+This method can be helpful in certain cases but has issues when the contained components have
+their own cache configurations. This is why the http component is preferred to solve this on the
+document level. But if for some reason you cannot use the default, this might help.
  
 ### Limitations
 
@@ -261,5 +278,5 @@ This might cause some issues when the added elements are somehow treated with Ja
 
 #### Caching
 
-The styles collector might not always pick up dynamically cached elements as they will add their own styleblock
-without triggering a refresh of the page cache.
+As explained in the styles collector section, the Fusion based collector has issues with cached components that
+have styles applied to them. This can result in styles missing from the document.

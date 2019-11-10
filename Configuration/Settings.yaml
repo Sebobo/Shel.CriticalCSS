@@ -3,3 +3,16 @@ Neos:
     fusion:
       autoInclude:
         Shel.CriticalCSS: true
+  Flow:
+    http:
+      chain:
+        'postprocess':
+          chain:
+            criticalCSS:
+              position: 'after standardsCompliance'
+              component: 'Shel\CriticalCSS\Http\StyleComponent'
+
+Shel:
+  CriticalCSS:
+    mergeStylesComponent:
+      enabled: true
