@@ -144,11 +144,57 @@ To style several parts of a component you can do the following:
         
         @process.styles = Shel.CriticalCSS:Styles {
             padding = '.5rem'
+            div {
+                margin = '1rem 0'
+            }
         }
     }    
     
 This will result in three style tags with three different css classes. All of them will be picked up 
-by the collector.
+by the collector.          
+    
+#### Using the shorthand Fusion helper
+
+Somewhere in your package define the short prototype:
+
+    prototype(Style) < prototype(Shel.CriticalCSS:Styles)
+    
+Then you can write the previous example like this:  
+   
+    prototype(My.Site:Component.Complex) < prototype(Neos.Fusion:Component) {
+        headline = ''
+        text = ''
+        footer = ''
+        
+        renderer = afx`
+            <section>
+                <header>
+                    <Style @path="@process.styles"
+                        font-weight="bold"
+                        color="black"
+                    />
+                    {props.headline}
+                </header>
+                
+                <div>{props.text}</div>
+                
+                <footer>
+                    <Style @path="@process.styles"
+                        font-size="80%"
+                        color="gray"
+                    />
+                    {props.footer}
+                </footer>
+            </section>
+        `
+        
+        @process.styles = Style {
+            padding = '.5rem'   
+            div {
+                margin = '1rem 0'
+            }
+        }
+    }   
 
 #### Modifying styles with props
 
