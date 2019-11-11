@@ -43,15 +43,15 @@ class StyleComponent implements ComponentInterface
         // Remove duplicates
         $styles = array_unique($matches[1]);
 
-        // Remove inline style tags from content
-        $content = preg_replace('/<style data-inline>.*?<\/style>/', '', $content);
-
-        // Add merged styles into one new style tag to head
         if (count($styles) > 0) {
-            $styleTag = '<style data-merged>' . join('', $styles) . '</style>';
-        }
-        $content = str_replace('</head>', $styleTag . '</head>', $content);
+            // Remove inline style tags from content
+            $content = preg_replace('/<style data-inline>.*?<\/style>/', '', $content);
 
-        $componentContext->replaceHttpResponse($response->withBody(ContentStream::fromContents($content)));
+            // Add merged styles into one new style tag to head
+            $styleTag = '<style data-merged>' . join('', $styles) . '</style>';
+            $content = str_replace('</head>', $styleTag . '</head>', $content);
+            
+            $componentContext->replaceHttpResponse($response->withBody(ContentStream::fromContents($content)));
+        }
     }
 }
