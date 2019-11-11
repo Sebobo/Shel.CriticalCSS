@@ -47,7 +47,9 @@ class StyleComponent implements ComponentInterface
         $content = preg_replace('/<style data-inline>.*?<\/style>/', '', $content);
 
         // Add merged styles into one new style tag to head
-        $styleTag = '<style data-merged>' . join('', $styles) . '</style>';
+        if (count($styles) > 0) {
+            $styleTag = '<style data-merged>' . join('', $styles) . '</style>';
+        }
         $content = str_replace('</head>', $styleTag . '</head>', $content);
 
         $componentContext->replaceHttpResponse($response->withBody(ContentStream::fromContents($content)));
