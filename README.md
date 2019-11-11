@@ -5,10 +5,11 @@
 [![Travis Build Status](https://travis-ci.org/Sebobo/Shel.CriticalCSS.svg?branch=master)](https://travis-ci.org/Sebobo/Shel.CriticalCSS)
 [![StyleCI](https://styleci.io/repos/219770230/shield?style=flat)](https://styleci.io/repos/219770230)
 
-_This package is in its early stages and doesn't have a 1.0 release yet_
+_This package is in early development and doesn't have a 1.0 release yet_
 
-This package provides several helpers to allow adding (dynamic) inline styles to Fusion components in Neos CMS
+This package provides several helpers to allow adding inline styles to Fusion components in Neos CMS
 and combining them locally or into the head of a html document.
+The styles are automatically scoped by default and can be defined dynamically like any other Fusion object.
 
 CSS classes are dynamically generated based on the hash of the defined styles.
 
@@ -16,13 +17,22 @@ This allows you to keep styles together with a component in one file and also be
 A good use case for this is to define inline styles for your critical CSS that should be loaded instantly when
 the site is shown and defer loading other styles that are not needed immediately.
 
-Support:
+Use cases:
 
-* Scoped styles
+* Define critical CSS that should be available for "above the fold" content.  
+* Define dynamic CSS variables for themed websites.
+* Include CSS with reusable components.
+* Have a minimal set of CSS for each individual page.
+
+Supported:
+
+* Scoped styles   
+* Style nesting
 * Global styles with specific selectors
 * Automatic style merging into document head via http component
-* Style nesting
 * `@media` and `@supports` queries
+
+This package doesn't require any specific browser features.
 
 The inspiration for this package came from [SvelteJS](https://svelte.dev) and [JSS](https://cssinjs.org).
 
