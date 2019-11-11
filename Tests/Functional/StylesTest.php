@@ -79,6 +79,23 @@ class StylesTest extends AbstractFusionObjectTest
     /**
      * @test
      */
+    public function nestedRenderingWithoutDataStructuresWorks()
+    {
+        $view = $this->buildView();
+
+        $view->setFusionPath('styles/nestedWithoutDataStructures');
+        $this->assertEquals(
+            '<style data-inline>' .
+            '.style--7028ec0ef2{color:blue}' .
+            '.style--7028ec0ef2 strong{font-weight:bold}' .
+            '</style>' .
+            '<div class="style--7028ec0ef2">foo <strong>bar</strong></div>', $view->render()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function selectorRenderingWorks()
     {
         $view = $this->buildView();

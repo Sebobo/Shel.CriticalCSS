@@ -116,6 +116,13 @@ class StylesImplementation extends DataStructureImplementation
         foreach ($properties as $key => $value) {
             $styleName = $level > 1 ? $key : $value;
             $styleValue = $level > 1 ? $value : $this->fusionValue($styleName);
+
+            // When using simple nesting with `{` instead of using Neos.Fusion:DataStructure
+            // we have to retrieve the value from the properties as the value is null.
+            if ($styleValue === null && array_key_exists($styleName, $this->properties)) {
+                $styleValue = $this->properties[$styleName];
+            }
+
             if (is_iterable($styleValue)) {
                 $childPath = array_merge($path, [$styleName]);
                 // Check for @media or @supports queries and reorder the selector

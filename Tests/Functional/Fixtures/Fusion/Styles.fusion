@@ -26,6 +26,14 @@ styles.nested = Shel.CriticalCSS:Styles {
     }
 }
 
+styles.nestedWithoutDataStructures = Shel.CriticalCSS:Styles {
+    @content = '<div>foo <strong>bar</strong></div>'
+    color = 'blue'
+    strong {
+        font-weight = 'bold'
+    }
+}
+
 styles.selector = Shel.CriticalCSS:Styles {
     @content = '<html><body>foo</body></html>'
     @selector = 'body'

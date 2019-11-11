@@ -92,7 +92,9 @@ Again a similar example but with nested styles
                 text-decoration = 'underline'
             }
         }
-    }                         
+    }           
+    
+When nesting you can either use `Neos.Fusion:DataStructure` or simple nesting with braces like in the example.              
     
 The resulting HTML will look similar to this:
 
