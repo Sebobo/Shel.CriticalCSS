@@ -37,9 +37,9 @@ class StylesTest extends AbstractFusionObjectTest
         $view->setFusionPath('styles/basic');
         $this->assertEquals(
             '<style data-inline>' .
-            '.style--013887df94{color:green;font-size:12px}' .
+            '.style--1d5b3fc659{color:green;font-size:12px}' .
             '</style>' .
-            '<div class="style--013887df94">foo</div>', $view->render()
+            '<div class="style--1d5b3fc659">foo</div>', $view->render()
         );
     }
 
@@ -69,10 +69,10 @@ class StylesTest extends AbstractFusionObjectTest
         $view->setFusionPath('styles/nested');
         $this->assertEquals(
             '<style data-inline>' .
-            '.style--7028ec0ef2{color:blue}' .
-            '.style--7028ec0ef2 strong{font-weight:bold}' .
+            '.style--0e1e7d5620{color:blue}' .
+            '.style--0e1e7d5620 strong{font-weight:bold}' .
             '</style>' .
-            '<div class="style--7028ec0ef2">foo <strong>bar</strong></div>', $view->render()
+            '<div class="style--0e1e7d5620">foo <strong>bar</strong></div>', $view->render()
         );
     }
 
@@ -86,10 +86,29 @@ class StylesTest extends AbstractFusionObjectTest
         $view->setFusionPath('styles/nestedWithoutDataStructures');
         $this->assertEquals(
             '<style data-inline>' .
-            '.style--7028ec0ef2{color:blue}' .
-            '.style--7028ec0ef2 strong{font-weight:bold}' .
+            '.style--e2384db9d9{color:blue}' .
+            '.style--e2384db9d9 strong{font-weight:bold}' .
+            '.style--e2384db9d9 strong em{color:pink}' .
             '</style>' .
-            '<div class="style--7028ec0ef2">foo <strong>bar</strong></div>', $view->render()
+            '<div class="style--e2384db9d9">foo <strong>bar <em>pony</em></strong></div>', $view->render()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function mixedNestedRenderingWorks()
+    {
+        $view = $this->buildView();
+
+        $view->setFusionPath('styles/mixedNesting');
+        $this->assertEquals(
+            '<style data-inline>' .
+            '.style--e2384db9d9{color:blue}' .
+            '.style--e2384db9d9 strong{font-weight:bold}' .
+            '.style--e2384db9d9 strong em{color:pink}' .
+            '</style>' .
+            '<div class="style--e2384db9d9">foo <strong>bar <em>pony</em></strong></div>', $view->render()
         );
     }
 
@@ -119,10 +138,10 @@ class StylesTest extends AbstractFusionObjectTest
         $view->setFusionPath('styles/mediaQuery');
         $this->assertEquals(
             '<style data-inline>' .
-            '.style--40a1017b31{color:blue}' .
-            '@media all{.style--40a1017b31{color:green}}' .
+            '.style--3e741db00a{color:blue}' .
+            '@media all{.style--3e741db00a{color:green}}' .
             '</style>' .
-            '<div class="style--40a1017b31">foo</div>', $view->render()
+            '<div class="style--3e741db00a">foo</div>', $view->render()
         );
     }
 
@@ -136,11 +155,11 @@ class StylesTest extends AbstractFusionObjectTest
         $view->setFusionPath('styles/mediaQueryWithNesting');
         $this->assertEquals(
             '<style data-inline>' .
-            '.style--b77a4ff07a{color:blue}' .
-            '@media all{.style--b77a4ff07a{color:green}}' .
-            '@media all{.style--b77a4ff07a strong{color:yellow}}' .
+            '.style--751ebabd93{color:blue}' .
+            '@media all{.style--751ebabd93{color:green}}' .
+            '@media all{.style--751ebabd93 strong{color:yellow}}' .
             '</style>' .
-            '<div class="style--b77a4ff07a">foo <strong>bar</strong></div>', $view->render()
+            '<div class="style--751ebabd93">foo <strong>bar</strong></div>', $view->render()
         );
     }
 
@@ -155,13 +174,13 @@ class StylesTest extends AbstractFusionObjectTest
         $this->assertEquals(
             '<style data-inline>' .
             '@media print{' .
-            '.style--8a3c0e177e strong{display:none}' .
+            '.style--2d1e5ab0be strong{display:none}' .
             '}' .
             '@media print{@media (max-width:12cm){' .
-            '.style--8a3c0e177e strong{display:block}' .
+            '.style--2d1e5ab0be strong{display:block}' .
             '}}' .
             '</style>' .
-            '<div class="style--8a3c0e177e">foo <strong>bar</strong></div>', $view->render()
+            '<div class="style--2d1e5ab0be">foo <strong>bar</strong></div>', $view->render()
         );
     }
 
@@ -175,15 +194,15 @@ class StylesTest extends AbstractFusionObjectTest
         $view->setFusionPath('styles/supportsQuery');
         $this->assertEquals(
             '<style data-inline>' .
-            '.style--955d31a3ff{' .
+            '.style--c07e794268{' .
             'display:block' .
             '}' .
             '@supports (display:flex){' .
-            '.style--955d31a3ff{' .
+            '.style--c07e794268{' .
             'display:flex' .
             '}}' .
             '</style>' .
-            '<div class="style--955d31a3ff">foo</div>', $view->render()
+            '<div class="style--c07e794268">foo</div>', $view->render()
         );
     }
 }
