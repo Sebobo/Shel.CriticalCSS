@@ -73,6 +73,14 @@ class StylesImplementation extends DataStructureImplementation
     }
 
     /**
+     * @return bool
+     */
+    protected function getStylesOnly()
+    {
+        return $this->fusionValue('__meta/stylesOnly') ?? false;
+    }
+
+    /**
      * @return string
      * @throws FusionException
      */
@@ -98,13 +106,17 @@ class StylesImplementation extends DataStructureImplementation
         $path = [$selector !== false ? $selector : '.style--#{$hash}'];
         $stylesHash = $this->stylesService->getHashForStyles($styleProperties, $path);
         $styles = $this->stylesService->renderStyles($styleProperties, $path);
+        $styles = str_replace('#{$hash}', $stylesHash, $styles);
+
+        if ($this->getStylesOnly()) {
+            return $styles;
+        }
+
         $styleTag = '<style data-inline>' . $styles . '</style>';
 
         // Don't augment the content, just prepend the style tag
         if ($this->getSelector() !== false) {
             return $styleTag . $content;
-        } else {
-            $styleTag = str_replace('#{$hash}', $stylesHash, $styleTag);
         }
 
         return

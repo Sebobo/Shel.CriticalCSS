@@ -3,4 +3,5 @@ prototype(Shel.CriticalCSS:Styles) < prototype(Neos.Fusion:DataStructure) {
     @content = ${value}
     @fallbackTagName = 'div'
     @selector = false
+    @stylesOnly = false
 }
