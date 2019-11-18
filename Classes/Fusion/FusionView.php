@@ -71,9 +71,9 @@ class FusionView extends BaseFusionView
             $prototypeName = $subArray['__objectType'];
             if ($prototypeName === $stylePrototypeName ||
                 ($prototypeName
-                && array_key_exists($prototypeName, $prototypes)
-                && array_key_exists('__prototypeChain', $prototypes[$prototypeName])
-                && in_array($stylePrototypeName, $prototypes[$prototypeName]['__prototypeChain']))) {
+                    && array_key_exists($prototypeName, $prototypes)
+                    && array_key_exists('__prototypeChain', $prototypes[$prototypeName])
+                    && in_array($stylePrototypeName, $prototypes[$prototypeName]['__prototypeChain']))) {
                 $props = iterator_to_array($subArray);
                 $props['__meta']['stylesOnly'] = true;
                 $outputArray[] = $props;
@@ -82,7 +82,7 @@ class FusionView extends BaseFusionView
 
         $output = '';
 
-        foreach($outputArray as $props) {
+        foreach ($outputArray as $props) {
             $fusionAst['shelCriticalStyles'] = $props;
             $fusionRuntime = new FusionRuntime($fusionAst, $this->controllerContext);
             $fusionRuntime->pushContextArray($this->variables);
