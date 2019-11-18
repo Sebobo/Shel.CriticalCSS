@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Shel\CriticalCSS\Service;
 
+/*
+ * This file is part of the Shel.CriticalCSS package.
+ */
+
 use Neos\Flow\Annotations as Flow;
 use Neos\Fusion\Exception as FusionException;
 use Neos\Neos\Domain\Exception as DomainException;

@@ -3,9 +3,13 @@ declare(strict_types=1);
 
 namespace Shel\CriticalCSS\Fusion;
 
+/*
+ * This file is part of the Shel.CriticalCSS package.
+ */
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Exception;
+use Neos\Flow\Security\Exception as SecurityException;
 use Neos\FluidAdaptor\View\TemplateView;
 use Neos\Fusion\View\FusionView as BaseFusionView;
 use Neos\Fusion\Core\Runtime as FusionRuntime;
@@ -16,6 +20,8 @@ use Shel\CriticalCSS\Service\FusionService;
  */
 class FusionView extends BaseFusionView
 {
+    protected $styleRenderPath = 'shelCriticalStyles';
+
     /**
      * @Flow\Inject
      * @var FusionService
@@ -29,11 +35,9 @@ class FusionView extends BaseFusionView
     protected $fallbackView;
 
     /**
-     * Load Fusion from the directories specified by $this->getOption('fusionPathPatterns')
-     *
-     * @return void
+     * @inheritDoc
      */
-    protected function loadFusion()
+    protected function loadFusion(): void
     {
         $fusionAst = [];
         try {
@@ -46,22 +50,24 @@ class FusionView extends BaseFusionView
     }
 
     /**
-     * Special method to render a specific prototype
+     * Iterates through the Fusion AST and renders all instantiated
+     * objects of the given prototype and returns the concatenated results as string.
      *
+     * @param string $stylePrototypeName
      * @return string
-     * @throws \Neos\Flow\Security\Exception
+     * @throws SecurityException
      */
-    public function renderStyles()
+    public function renderStyles(string $stylePrototypeName = 'Shel.CriticalCSS:Styles'): string
     {
         if (!$this->parsedFusion) {
             $this->loadFusion();
         }
         $fusionAst = $this->parsedFusion;
         $prototypes = $fusionAst['__prototypes'];
-        $stylePrototypeName = 'Shel.CriticalCSS:Styles';
 
         $arrayIterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($fusionAst));
         $outputArray = [];
+        /** @noinspection PhpUnusedLocalVariableInspection */
         foreach ($arrayIterator as $sub) {
             $subArray = $arrayIterator->getSubIterator();
             /** @noinspection PhpParamsInspection */
@@ -82,11 +88,12 @@ class FusionView extends BaseFusionView
 
         $output = '';
 
+        // Render each found instantiated prototype
         foreach ($outputArray as $props) {
-            $fusionAst['shelCriticalStyles'] = $props;
+            $fusionAst[$this->styleRenderPath] = $props;
             $fusionRuntime = new FusionRuntime($fusionAst, $this->controllerContext);
             $fusionRuntime->pushContextArray($this->variables);
-            $output .= $fusionRuntime->render('shelCriticalStyles');
+            $output .= $fusionRuntime->render($this->styleRenderPath);
             $fusionRuntime->popContext();
         }
 

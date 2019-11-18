@@ -73,11 +73,21 @@ class StylesImplementation extends DataStructureImplementation
     }
 
     /**
+     * When this is true, only the rendered CSS is returned and nothing else.
+     *
      * @return bool
      */
     protected function getStylesOnly()
     {
         return $this->fusionValue('__meta/stylesOnly') ?? false;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getClassPrefix()
+    {
+        return $this->fusionValue('__meta/classPrefix') ?? 'style--';
     }
 
     /**
@@ -89,6 +99,7 @@ class StylesImplementation extends DataStructureImplementation
         $content = $this->getContent();
         $sortedChildFusionKeys = $this->sortNestedFusionKeys();
         $selector = $this->getSelector();
+        $classPrefix = $this->getClassPrefix();
 
         $styleProperties = [];
         foreach ($sortedChildFusionKeys as $key) {
@@ -106,7 +117,7 @@ class StylesImplementation extends DataStructureImplementation
             $styleProperties[$key] = $value;
         }
 
-        $path = [$selector !== false ? $selector : '.style--#{$hash}'];
+        $path = [$selector !== false ? $selector : '.' . $classPrefix . '#{$hash}'];
         $stylesHash = $this->stylesService->getHashForStyles($styleProperties, $path);
         $styles = $this->stylesService->renderStyles($styleProperties, $path);
         $styles = str_replace('#{$hash}', $stylesHash, $styles);
@@ -126,7 +137,7 @@ class StylesImplementation extends DataStructureImplementation
             $styleTag .
             $this->htmlAugmenter->addAttributes(
                 $content,
-                ['class' => 'style--' . $stylesHash],
+                ['class' => $classPrefix . $stylesHash],
                 $this->getFallbackTagName()
             );
     }

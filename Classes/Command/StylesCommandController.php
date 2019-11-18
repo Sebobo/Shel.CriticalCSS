@@ -22,7 +22,6 @@ use Neos\Neos\Domain\Model\Site;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Shel\CriticalCSS\Fusion\FusionView;
 use Shel\CriticalCSS\Service\FusionService;
-use Shel\CriticalCSS\Service\StylesService;
 
 /**
  * The User Command Controller
@@ -42,12 +41,6 @@ class StylesCommandController extends CommandController
      * @var FusionService
      */
     protected $fusionService;
-
-    /**
-     * @Flow\Inject
-     * @var StylesService
-     */
-    protected $stylesService;
 
     /**
      * @param string $siteNodeName

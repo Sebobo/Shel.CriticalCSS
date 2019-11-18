@@ -2,6 +2,7 @@ prototype(Shel.CriticalCSS:Styles) {
     @class = 'Shel\\CriticalCSS\\FusionObjects\\StylesImplementation'
     @content = ${value}
     @fallbackTagName = 'div'
+    @classPrefix = 'style--'
     @selector = false
     @stylesOnly = false
 }
