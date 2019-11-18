@@ -15,9 +15,9 @@ use Neos\Flow\Http\Uri;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Controller\Arguments;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\Exception as MvcException;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Security\Exception as SecurityException;
-use Neos\Fusion\Exception;
 use Neos\Neos\Domain\Model\Site;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Shel\CriticalCSS\Fusion\FusionView;
@@ -51,14 +51,13 @@ class StylesCommandController extends CommandController
 
     /**
      * @param string $siteNodeName
-     * @throws Exception
      * @throws SecurityException
-     * @throws \Neos\Flow\Mvc\Exception
-     * @throws \Neos\Neos\Domain\Exception
+     * @throws MvcException
      */
     public function exportCommand(string $siteNodeName): void
     {
         /** @var Site $site */
+        /** @noinspection PhpUndefinedMethodInspection */
         $site = $this->siteRepository->findOneByNodeName($siteNodeName);
 
         if (!$site) {
