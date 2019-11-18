@@ -20,4 +20,4 @@ install:
     - mv Shel.CriticalCSS flow-base-distribution/Packages/Plugins/Shel.CriticalCSS
     - cd flow-base-distribution
 script:
-    - bin/phpunit --colors -c Build/BuildEssentials/PhpUnit/FunctionalTests.xml Packages/Plugins/Shel.CriticalCSS/Tests/Functional/*
+    - bin/phpunit --colors -c Build/BuildEssentials/PhpUnit/FunctionalTests.xml Packages/Plugins/Shel.CriticalCSS/Tests/Functional/
