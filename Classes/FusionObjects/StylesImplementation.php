@@ -98,6 +98,9 @@ class StylesImplementation extends DataStructureImplementation
             // we have to retrieve the value from the properties as the value is null.
             if ($value === null && array_key_exists($key, $this->properties)) {
                 $value = $this->properties[$key];
+                if (is_array($value)) {
+                    $this->evaluateNestedProps($key, $value);
+                }
             }
 
             $styleProperties[$key] = $value;
@@ -126,5 +129,22 @@ class StylesImplementation extends DataStructureImplementation
                 ['class' => 'style--' . $stylesHash],
                 $this->getFallbackTagName()
             );
+    }
+
+    /**
+     * @param string $path
+     * @param array $props
+     */
+    protected function evaluateNestedProps(string $path, array &$props): void
+    {
+        if (array_key_exists('__objectType', $props)) {
+            $props = $this->fusionValue($path);
+        } else {
+            array_walk($props, function (&$prop, $propName, $path) {
+                if (is_array($prop)) {
+                    $this->evaluateNestedProps($path . '/' . $propName, $prop);
+                }
+            }, $path);
+        }
     }
 }
