@@ -62,6 +62,22 @@ class StylesTest extends AbstractFusionObjectTest
     /**
      * @test
      */
+    public function eelExpressionRenderingWorks()
+    {
+        $view = $this->buildView();
+
+        $view->setFusionPath('styles/eelExpressions');
+        $this->assertEquals(
+            '<style data-inline>' .
+            '.style--a01f4ebd21{font-size:7px}' .
+            '</style>' .
+            '<div class="style--a01f4ebd21">foo</div>', $view->render()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function nestedRenderingWorks()
     {
         $view = $this->buildView();
@@ -97,18 +113,18 @@ class StylesTest extends AbstractFusionObjectTest
     /**
      * @test
      */
-    public function mixedNestedRenderingWorks()
+    public function nestedEvaluationRenderingWorks()
     {
         $view = $this->buildView();
 
-        $view->setFusionPath('styles/mixedNesting');
+        $view->setFusionPath('styles/nestedEvaluation');
         $this->assertEquals(
             '<style data-inline>' .
-            '.style--e2384db9d9{color:blue}' .
-            '.style--e2384db9d9 strong{font-weight:bold}' .
-            '.style--e2384db9d9 strong em{color:pink}' .
+            '.style--385286f4a7{color:blue}' .
+            '.style--385286f4a7 strong{font-weight:bold}' .
+            '.style--385286f4a7 strong em{margin-top:50px}' .
             '</style>' .
-            '<div class="style--e2384db9d9">foo <strong>bar <em>pony</em></strong></div>', $view->render()
+            '<div class="style--385286f4a7">foo <strong>bar <em>pony</em></strong></div>', $view->render()
         );
     }
 

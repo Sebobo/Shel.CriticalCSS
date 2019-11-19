@@ -18,6 +18,11 @@ styles.hashCase2 = Shel.CriticalCSS:Styles {
     color = 'green'
 }
 
+styles.eelExpressions = Shel.CriticalCSS:Styles {
+    @content = '<div>foo</div>'
+    font-size = ${5 + 2 + 'px'}
+}
+
 styles.nested = Shel.CriticalCSS:Styles {
     @content = '<div>foo <strong>bar</strong></div>'
     color = 'blue'
@@ -37,13 +42,13 @@ styles.nestedWithoutDataStructures = Shel.CriticalCSS:Styles {
     }
 }
 
-styles.mixedNesting = Shel.CriticalCSS:Styles {
+styles.nestedEvaluation = Shel.CriticalCSS:Styles {
     @content = '<div>foo <strong>bar <em>pony</em></strong></div>'
     color = 'blue'
     strong {
         font-weight = 'bold'
         em = Neos.Fusion:DataStructure {
-            color = 'pink'
+            margin-top = ${5 * 10 + 'px'}
         }
     }
 }

@@ -73,6 +73,24 @@ class StylesImplementation extends DataStructureImplementation
     }
 
     /**
+     * When this is true, only the rendered CSS is returned and nothing else.
+     *
+     * @return bool
+     */
+    protected function getStylesOnly()
+    {
+        return $this->fusionValue('__meta/stylesOnly') ?? false;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getClassPrefix()
+    {
+        return $this->fusionValue('__meta/classPrefix') ?? 'style--';
+    }
+
+    /**
      * @return string
      * @throws FusionException
      */
@@ -81,6 +99,7 @@ class StylesImplementation extends DataStructureImplementation
         $content = $this->getContent();
         $sortedChildFusionKeys = $this->sortNestedFusionKeys();
         $selector = $this->getSelector();
+        $classPrefix = $this->getClassPrefix();
 
         $styleProperties = [];
         foreach ($sortedChildFusionKeys as $key) {
@@ -90,29 +109,53 @@ class StylesImplementation extends DataStructureImplementation
             // we have to retrieve the value from the properties as the value is null.
             if ($value === null && array_key_exists($key, $this->properties)) {
                 $value = $this->properties[$key];
+                if (is_array($value)) {
+                    $this->evaluateNestedProps($key, $value);
+                }
             }
 
             $styleProperties[$key] = $value;
         }
 
-        $path = [$selector !== false ? $selector : '.style--#{$hash}'];
+        $path = [$selector !== false ? $selector : '.' . $classPrefix . '#{$hash}'];
         $stylesHash = $this->stylesService->getHashForStyles($styleProperties, $path);
         $styles = $this->stylesService->renderStyles($styleProperties, $path);
+        $styles = str_replace('#{$hash}', $stylesHash, $styles);
+
+        if ($this->getStylesOnly()) {
+            return $styles;
+        }
+
         $styleTag = '<style data-inline>' . $styles . '</style>';
 
         // Don't augment the content, just prepend the style tag
         if ($this->getSelector() !== false) {
             return $styleTag . $content;
-        } else {
-            $styleTag = str_replace('#{$hash}', $stylesHash, $styleTag);
         }
 
         return
             $styleTag .
             $this->htmlAugmenter->addAttributes(
                 $content,
-                ['class' => 'style--' . $stylesHash],
+                ['class' => $classPrefix . $stylesHash],
                 $this->getFallbackTagName()
             );
+    }
+
+    /**
+     * @param string $path
+     * @param array $props
+     */
+    protected function evaluateNestedProps(string $path, array &$props): void
+    {
+        if (array_key_exists('__objectType', $props)) {
+            $props = $this->fusionValue($path);
+        } else {
+            array_walk($props, function (&$prop, $propName, $path) {
+                if (is_array($prop)) {
+                    $this->evaluateNestedProps($path . '/' . $propName, $prop);
+                }
+            }, $path);
+        }
     }
 }

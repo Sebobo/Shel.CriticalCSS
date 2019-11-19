@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Shel\CriticalCSS\Http;
 
-use GuzzleHttp\Psr7\Stream;
+/*
+ * This file is part of the Shel.CriticalCSS package.
+ */
+
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\Component\ComponentContext;
 use Neos\Flow\Http\Component\ComponentInterface;
@@ -50,7 +53,7 @@ class StyleComponent implements ComponentInterface
             // Add merged styles into one new style tag to head
             $styleTag = '<style data-merged>' . join('', $styles) . '</style>';
             $content = str_replace('</head>', $styleTag . '</head>', $content);
-            
+
             $componentContext->replaceHttpResponse($response->withBody(ContentStream::fromContents($content)));
         }
     }
