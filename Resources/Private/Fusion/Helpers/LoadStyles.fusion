@@ -1,4 +1,5 @@
-prototype(Shel.CriticalCSS:LoadStyles) < prototype(Neos.Fusion:Value) {
+prototype(Shel.CriticalCSS:LoadStyles) {
+    @class = 'Shel\\CriticalCSS\\FusionObjects\\LoadStylesImplementation'
+    content = ${value ? value : ''}
     path = ''
-    value = ${'<style data-inline>' + File.readFile(this.path) + '</style>' + this.content}
 }
