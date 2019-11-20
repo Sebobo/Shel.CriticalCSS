@@ -57,7 +57,7 @@ class FusionView extends BaseFusionView
      * @return string
      * @throws SecurityException
      */
-    public function renderStyles(string $stylePrototypeName = 'Shel.CriticalCSS:Styles'): string
+    public function renderStyles(string $stylePrototypeName): string
     {
         if (!$this->parsedFusion) {
             $this->loadFusion();

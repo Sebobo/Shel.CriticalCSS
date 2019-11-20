@@ -43,11 +43,14 @@ class StylesCommandController extends CommandController
     protected $fusionService;
 
     /**
-     * @param string $siteNodeName
-     * @throws SecurityException
+     * This command returns all styles for a given site node and prototype name.
+     *
+     * @param string $siteNodeName name of the site node to create the context from for rendering Fusion
+     * @param string $basePrototypeName name of the base prototype that should be used to export styles from
      * @throws MvcException
+     * @throws SecurityException
      */
-    public function exportCommand(string $siteNodeName): void
+    public function exportCommand(string $siteNodeName, string $basePrototypeName = 'Shel.CriticalCSS:Styles'): void
     {
         /** @var Site $site */
         /** @noinspection PhpUndefinedMethodInspection */
@@ -64,7 +67,7 @@ class StylesCommandController extends CommandController
         $fusionView->setPackageKey($site->getSiteResourcesPackageKey());
         $fusionView->assign('site', $site->getNodeName());
 
-        $this->outputLine($fusionView->renderStyles());
+        $this->outputLine($fusionView->renderStyles($basePrototypeName));
     }
 
     /**
