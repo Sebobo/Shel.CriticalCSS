@@ -23,7 +23,6 @@ class StyleLoaderTest extends AbstractFusionObjectTest
         $view = parent::buildView();
         $view->setPackageKey('Shel.CriticalCSS');
         $view->setFusionPathPattern(__DIR__ . '/Fixtures/Fusion');
-        $view->assign('fixtureDirectory', __DIR__ . '/Fixtures/');
         return $view;
     }
 
@@ -50,6 +49,21 @@ class StyleLoaderTest extends AbstractFusionObjectTest
         $view = $this->buildView();
 
         $view->setFusionPath('styleLoader/prependStyles');
+        $this->assertEquals(
+            '<style data-inline>.foo {
+    color: blue;
+}
+</style><div>foo</div>', $view->render());
+    }
+
+    /**
+     * @test
+     */
+    public function addStylesAsProcessWorks()
+    {
+        $view = $this->buildView();
+
+        $view->setFusionPath('styleLoader/asProcess');
         $this->assertEquals(
             '<style data-inline>.foo {
     color: blue;

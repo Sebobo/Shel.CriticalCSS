@@ -1,4 +1,5 @@
 prototype(Shel.CriticalCSS:LoadStyles).@class = 'Shel\\CriticalCSS\\FusionObjects\\LoadStylesImplementation'
+prototype(Neos.Fusion:Tag).@class = 'Neos\\Fusion\\FusionObjects\\TagImplementation'
 prototype(Neos.Fusion:TestRenderer).@class = 'Neos\\Fusion\\Tests\\Functional\\View\\Fixtures\\TestRenderer'
 
 styleLoader.insertStyles = Shel.CriticalCSS:LoadStyles {
@@ -8,4 +9,17 @@ styleLoader.insertStyles = Shel.CriticalCSS:LoadStyles {
 styleLoader.prependStyles = Shel.CriticalCSS:LoadStyles {
     path = 'Packages/Plugins/Shel.CriticalCSS/Tests/Functional/Fixtures/Fusion/example.css'
     content = '<div>foo</div>'
+}
+
+styleLoader.prependStyles = Shel.CriticalCSS:LoadStyles {
+    path = 'Packages/Plugins/Shel.CriticalCSS/Tests/Functional/Fixtures/Fusion/example.css'
+    content = '<div>foo</div>'
+}
+
+styleLoader.asProcess = Neos.Fusion:Tag {
+    content = 'foo'
+    @process.style = Shel.CriticalCSS:LoadStyles {
+        content = ${value}
+        path = 'Packages/Plugins/Shel.CriticalCSS/Tests/Functional/Fixtures/Fusion/example.css'
+    }
 }
