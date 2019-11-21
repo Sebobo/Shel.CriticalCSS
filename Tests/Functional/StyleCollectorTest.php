@@ -23,7 +23,6 @@ class StyleCollectorTest extends AbstractFusionObjectTest
         $view = parent::buildView();
         $view->setPackageKey('Shel.CriticalCSS');
         $view->setFusionPathPattern(__DIR__ . '/Fixtures/Fusion');
-        $view->assign('fixtureDirectory', __DIR__ . '/Fixtures/');
         return $view;
     }
 
