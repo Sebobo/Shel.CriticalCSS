@@ -33,6 +33,12 @@ class StyleComponent implements ComponentInterface
             return;
         }
 
+        $request = $componentContext->getHttpRequest();
+
+        if (strpos($request->getUri()->getPath(), '/neos/') === 0) {
+            return;
+        }
+
         $response = $componentContext->getHttpResponse();
         $content = $response->getBody()->getContents();
 
@@ -55,6 +61,8 @@ class StyleComponent implements ComponentInterface
             $content = str_replace('</head>', $styleTag . '</head>', $content);
 
             $componentContext->replaceHttpResponse($response->withBody(ContentStream::fromContents($content)));
+        } else {
+            $response->getBody()->rewind();
         }
     }
 }
