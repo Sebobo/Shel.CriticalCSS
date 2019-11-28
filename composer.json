@@ -3,6 +3,14 @@
     "type": "neos-plugin",
     "name": "shel/critical-css",
     "license": "GPL-3.0-or-later",
+    "keywords": [
+      "Neos",
+      "Neos CMS",
+      "CSS",
+      "Fusion",
+      "Styles",
+      "Components"
+    ],
     "require": {
         "neos/neos": "^4.3 || ^5.0"
     },
