@@ -5,7 +5,7 @@
 [![Travis Build Status](https://travis-ci.org/Sebobo/Shel.CriticalCSS.svg?branch=master)](https://travis-ci.org/Sebobo/Shel.CriticalCSS)
 [![StyleCI](https://styleci.io/repos/219770230/shield?style=flat)](https://styleci.io/repos/219770230)
 
-_This package is in early development and doesn't have a 1.0 release yet_
+_This package is in a testing phase and doesn't have a stable 1.0 release yet_
 
 This package provides several helpers to allow adding inline styles to Fusion components in Neos CMS
 and combining them locally or into the head of a html document.
@@ -36,6 +36,24 @@ This package doesn't require any specific browser features.
 
 The inspiration for this package came from [SvelteJS](https://svelte.dev) and [JSS](https://cssinjs.org).
 
+Table of contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Adding inline styles](#adding-inline-styles)
+    * [Nesting styles](#nesting-styles)
+    * [Using multiple styles in one component](#using-multiple-styles-in-one-component)
+    * [Using the shorthand Fusion helper](#using-the-shorthand-fusion-helper)
+    * [Modifying styles with props](#modifying-styles-with-props)
+    * [Usage with CSS variables](#usage-with-css-variables)
+    * [Custom selectors](#custom-selectors)
+    * [Insert styles from a file](#insert-styles-from-a-file)
+    * [Other examples](#other-examples)
+  * [Modifying the styles collector behaviour](#-modifying-the-styles-collector-behaviour)
+    * [Fusion based style collector](#fusion-based-style-collector)
+  * [Limitations](#limitations)
+    * [Inserting new elements in the Neos UI](#inserting-new-elements-in-the-neos-ui)
+  
 ## Installation
 
 Run this in your site package:
