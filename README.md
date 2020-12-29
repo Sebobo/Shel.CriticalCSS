@@ -5,8 +5,6 @@
 [![Travis Build Status](https://travis-ci.org/Sebobo/Shel.CriticalCSS.svg?branch=master)](https://travis-ci.org/Sebobo/Shel.CriticalCSS)
 [![StyleCI](https://styleci.io/repos/219770230/shield?style=flat)](https://styleci.io/repos/219770230)
 
-_This package is in a testing phase and doesn't have a stable 1.0 release yet_
-
 This package provides several helpers to allow adding inline styles to Fusion components in Neos CMS
 and combining them locally or into the head of a html document.
 The styles are automatically scoped by default and can be defined dynamically like any other Fusion object.
