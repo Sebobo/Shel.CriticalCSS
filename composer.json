@@ -12,7 +12,7 @@
       "Components"
     ],
     "require": {
-        "neos/neos": "^4.3 || ^5.0"
+        "neos/neos": "~7.0 || dev-master"
     },
     "authors": [
       {

@@ -322,14 +322,14 @@ You can also take a look at the [functional test fixtures](Tests/Functional/Fixt
                
 ### Modifying the styles collector behaviour
 
-By default the collector is applied as http component at the end of the request chain. 
+By default the collector is applied as http middleware at the end of the request chain. 
 It will merge all inline styles generated with this package into one style tag in the html head.
 Duplicates are removed during this process.
 You can disable this behaviour with this setting: 
 
     Shel:
         CriticalCSS:
-            mergeStylesComponent:
+            mergeStyles:
                 enabled: false
                 
 #### Fusion based style collector                

@@ -5,14 +5,12 @@ Neos:
         Shel.CriticalCSS: true
   Flow:
     http:
-      chain:
-        'postprocess':
-          chain:
-            criticalCSS:
-              position: 'after standardsCompliance'
-              component: 'Shel\CriticalCSS\Http\StyleComponent'
+      middlewares:
+        Shel.CriticalCSS:MergeStyleTags:
+          position: 'before dispatch'
+          middleware: 'Shel\CriticalCSS\Http\StyleMiddleware'
 
 Shel:
   CriticalCSS:
-    mergeStylesComponent:
+    mergeStyles:
       enabled: true
