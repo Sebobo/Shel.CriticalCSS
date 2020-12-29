@@ -5,10 +5,10 @@ git:
     submodules: false
 matrix:
     include:
-        - php: 7.2
+        - php: 7.4
 
 before_install:
-    - export FLOW_TARGET_VERSION=5.3
+    - export FLOW_TARGET_VERSION=7.0
     - cd ..
     - git clone https://github.com/neos/flow-base-distribution.git -b ${FLOW_TARGET_VERSION}
     - cd flow-base-distribution
