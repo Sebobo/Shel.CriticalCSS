@@ -44,6 +44,7 @@ class StyleMiddleware implements MiddlewareInterface
         }
 
         $content = $response->getBody()->getContents();
+        $response->getBody()->rewind();
 
         // Retrieve all inline style tags
         preg_match_all('/<style data-inline>(.*?)<\/style>/', $content, $matches);
