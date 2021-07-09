@@ -173,8 +173,10 @@ by the collector.
 
 Somewhere in your package define the short prototype:
 
-    prototype(Style) < prototype(Shel.CriticalCSS:Styles)
+    prototype(CSS:Style) < prototype(Shel.CriticalCSS:Styles)
     
+(Note the needed colon:  `CSS`**`:`**`Style`. Fusion doesn't mind, but afx would convert `CssStyle` to a `Neos.Fusion:Tag`. Afx needs a way to differentiate.)
+
 Then you can write the previous example like this:  
    
     prototype(My.Site:Component.Complex) < prototype(Neos.Fusion:Component) {
@@ -185,7 +187,7 @@ Then you can write the previous example like this:
         renderer = afx`
             <section>
                 <header>
-                    <Style @path="@process.styles"
+                    <CSS:Style @path="@process.styles"
                         font-weight="bold"
                         color="black"
                     />
@@ -195,7 +197,7 @@ Then you can write the previous example like this:
                 <div>{props.text}</div>
                 
                 <footer>
-                    <Style @path="@process.styles"
+                    <CSS:Style @path="@process.styles"
                         font-size="80%"
                         color="gray"
                     />
@@ -204,7 +206,7 @@ Then you can write the previous example like this:
             </section>
         `
         
-        @process.styles = Style {
+        @process.styles = CSS:Style {
             padding = '.5rem'   
             div {
                 margin = '1rem 0'
@@ -250,7 +252,7 @@ You can also easily define global or local CSS variables this way:
                 }
             }
         }
-    } 
+    }
     
 And when you then have a nested component like this:    
  
