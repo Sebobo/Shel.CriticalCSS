@@ -7,18 +7,15 @@ namespace Shel\CriticalCSS\Command;
  * This file is part of the Shel.CriticalCSS package.
  */
 
+use GuzzleHttp\Psr7\ServerRequest;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Cli\CommandController;
-use Neos\Flow\Http\Request;
-use Neos\Flow\Http\Response;
-use Neos\Flow\Http\Uri;
 use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\Controller\Arguments;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Flow\Mvc\Exception as MvcException;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Security\Exception as SecurityException;
-use Neos\Neos\Domain\Model\Site;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Shel\CriticalCSS\Fusion\FusionView;
 use Shel\CriticalCSS\Service\FusionService;
@@ -47,13 +44,10 @@ class StylesCommandController extends CommandController
      *
      * @param string $siteNodeName name of the site node to create the context from for rendering Fusion
      * @param string $basePrototypeName name of the base prototype that should be used to export styles from
-     * @throws MvcException
      * @throws SecurityException
      */
     public function exportCommand(string $siteNodeName, string $basePrototypeName = 'Shel.CriticalCSS:Styles'): void
     {
-        /** @var Site $site */
-        /** @noinspection PhpUndefinedMethodInspection */
         $site = $this->siteRepository->findOneByNodeName($siteNodeName);
 
         if (!$site) {
@@ -72,14 +66,12 @@ class StylesCommandController extends CommandController
 
     /**
      * Create a simple controller context which can be used to instantiate a Fusion runtime etc.
-     *
-     * @return ControllerContext
      */
-    protected function createSimpleControllerContext()
+    protected function createSimpleControllerContext(): ControllerContext
     {
-        $httpRequest = Request::create(new Uri('http://localhost'));
-        $request = new ActionRequest($httpRequest);
-        $response = new Response();
+        $httpRequest = new ServerRequest('POST', 'http://localhost');
+        $request = ActionRequest::fromHttpRequest($httpRequest);
+        $response = new ActionResponse();
         $arguments = new Arguments([]);
         $uriBuilder = new UriBuilder();
         $uriBuilder->setRequest($request);

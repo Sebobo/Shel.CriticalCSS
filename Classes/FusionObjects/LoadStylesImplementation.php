@@ -52,12 +52,10 @@ class LoadStylesImplementation extends AbstractFusionObject
     /**
      * Loads the content of a resource and returns it as string
      *
-     * @param string $path
-     * @param string
      * @return string Content of the resource
      * @throws InvalidVariableException
      */
-    public function loadResourceContent($path): string
+    public function loadResourceContent(?string $path): string
     {
         if ($path === null) {
             throw new InvalidVariableException('You have to define a path.', 1573317165);

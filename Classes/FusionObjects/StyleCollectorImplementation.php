@@ -31,12 +31,12 @@ class StyleCollectorImplementation extends AbstractFusionObject
         $styles = array_unique($matches[1]);
         $content = preg_replace('/<style data-inline>.*?<\/style>/', '', $content);
 
-        $styleTag = '<style>' . join('', $styles) . '</style>';
+        $styleTag = '<style>' . implode('', $styles) . '</style>';
 
         if (strpos($content, '</head>') !== false) {
             return str_replace('</head>', $styleTag . '</head>', $content);
-        } else {
-            return $styleTag . $content;
         }
+
+        return $styleTag . $content;
     }
 }

@@ -43,8 +43,6 @@ class FusionView extends BaseFusionView
         try {
             $fusionAst = $this->fusionService->getMergedFusionObjectTreeForSitePackage($this->getOption('packageKey'));
         } catch (Exception $e) {
-        } catch (\Neos\Fusion\Exception $e) {
-        } catch (\Neos\Neos\Domain\Exception $e) {
         }
         $this->parsedFusion = $fusionAst;
     }

@@ -74,18 +74,13 @@ class StylesImplementation extends DataStructureImplementation
 
     /**
      * When this is true, only the rendered CSS is returned and nothing else.
-     *
-     * @return bool
      */
-    protected function getStylesOnly()
+    protected function getStylesOnly(): bool
     {
         return $this->fusionValue('__meta/stylesOnly') ?? false;
     }
 
-    /**
-     * @return string
-     */
-    protected function getClassPrefix()
+    protected function getClassPrefix(): string
     {
         return $this->fusionValue('__meta/classPrefix') ?? 'style--';
     }

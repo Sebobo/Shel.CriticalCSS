@@ -57,9 +57,9 @@ class StylesService
     protected function renderProperties(array $properties, array $path = []): string
     {
         // Construct full CSS selector
-        $pathName = join(array_map(function ($part) {
+        $pathName = implode(' ', array_map(static function ($part) {
             return strpos($part, '@') === 0 ? $part . '{' : $part;
-        }, $path), ' ');
+        }, $path));
         $pathName = str_replace('{ ', '{', $pathName);
 
         $subSelectors = [];
@@ -84,14 +84,14 @@ class StylesService
             $styles = $pathName . '{';
 
             // Insert simple props
-            $styles .= join(';', $styleProps);
+            $styles .= implode(';', $styleProps);
 
             // Finish block with correct amount of closing braces
             $mediaQueryCount = substr_count($pathName, '@');
             $styles .= str_repeat('}', $mediaQueryCount + 1);
         }
 
-        return $styles . join('', $subSelectors);
+        return $styles . implode('', $subSelectors);
     }
 
     /**
