@@ -299,7 +299,7 @@ Do scoping is done, but the style tag will be picked up by the style collector.
         text = ''
         
         renderer = afx`
-            <Shel.CriticalCSS:LoadStyles path="ressource://My.Site/Private/Fusion/Components/Test/style.css"/>        
+            <Shel.CriticalCSS:LoadStyles path="resource://My.Site/Private/Fusion/Components/Test/style.css"/>        
             <div>{props.text}</div>
         `
     }
@@ -314,7 +314,7 @@ Also works as `process`:
         `
         
         @process.addStyles = Shel.CriticalCSS:LoadStyles {
-            path="ressource://My.Site/Private/Fusion/Components/Test/style.css"
+            path="resource://My.Site/Private/Fusion/Components/Test/style.css"
         }    
     }
 
