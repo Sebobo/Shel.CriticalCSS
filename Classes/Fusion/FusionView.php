@@ -8,9 +8,8 @@ namespace Shel\CriticalCSS\Fusion;
  */
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\Exception;
 use Neos\Flow\Security\Exception as SecurityException;
-use Neos\FluidAdaptor\View\TemplateView;
+use Neos\Fusion\Core\FusionGlobals;
 use Neos\Fusion\View\FusionView as BaseFusionView;
 use Neos\Fusion\Core\Runtime as FusionRuntime;
 use Shel\CriticalCSS\Service\FusionService;
@@ -20,19 +19,10 @@ use Shel\CriticalCSS\Service\FusionService;
  */
 class FusionView extends BaseFusionView
 {
-    protected $styleRenderPath = 'shelCriticalStyles';
+    protected string $styleRenderPath = 'shelCriticalStyles';
 
-    /**
-     * @Flow\Inject
-     * @var FusionService
-     */
-    protected $fusionService;
-
-    /**
-     * @Flow\Inject
-     * @var TemplateView
-     */
-    protected $fallbackView;
+    #[Flow\Inject]
+    protected FusionService $fusionService;
 
     /**
      * @inheritDoc
@@ -41,8 +31,10 @@ class FusionView extends BaseFusionView
     {
         $fusionAst = [];
         try {
-            $fusionAst = $this->fusionService->getMergedFusionObjectTreeForSitePackage($this->getOption('packageKey'));
-        } catch (Exception $e) {
+            $fusionAst = $this->fusionService->getFusionConfigurationForSitePackage(
+                $this->getOption('packageKey')
+            );
+        } catch (\Exception) {
         }
         $this->parsedFusion = $fusionAst;
     }
@@ -51,8 +43,6 @@ class FusionView extends BaseFusionView
      * Iterates through the Fusion AST and renders all instantiated
      * objects of the given prototype and returns the concatenated results as string.
      *
-     * @param string $stylePrototypeName
-     * @return string
      * @throws SecurityException
      */
     public function renderStyles(string $stylePrototypeName): string
@@ -69,7 +59,7 @@ class FusionView extends BaseFusionView
         foreach ($arrayIterator as $sub) {
             $subArray = $arrayIterator->getSubIterator();
             /** @noinspection PhpParamsInspection */
-            if (!array_key_exists('__objectType', $subArray)) {
+            if (!$subArray || !array_key_exists('__objectType', $subArray)) {
                 continue;
             }
             $prototypeName = $subArray['__objectType'];
@@ -77,7 +67,7 @@ class FusionView extends BaseFusionView
                 ($prototypeName
                     && array_key_exists($prototypeName, $prototypes)
                     && array_key_exists('__prototypeChain', $prototypes[$prototypeName])
-                    && in_array($stylePrototypeName, $prototypes[$prototypeName]['__prototypeChain']))) {
+                    && in_array($stylePrototypeName, $prototypes[$prototypeName]['__prototypeChain'], true))) {
                 $props = iterator_to_array($subArray);
                 $props['__meta']['stylesOnly'] = true;
                 $outputArray[] = $props;
@@ -89,7 +79,10 @@ class FusionView extends BaseFusionView
         // Render each found instantiated prototype
         foreach ($outputArray as $props) {
             $fusionAst[$this->styleRenderPath] = $props;
-            $fusionRuntime = new FusionRuntime($fusionAst, $this->controllerContext);
+            $fusionGlobals = FusionGlobals::fromArray(array_filter([
+                'request' => $this->assignedActionRequest,
+            ]));
+            $fusionRuntime = new FusionRuntime($fusionAst, $fusionGlobals);
             $fusionRuntime->pushContextArray($this->variables);
             $output .= $fusionRuntime->render($this->styleRenderPath);
             $fusionRuntime->popContext();

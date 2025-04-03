@@ -19,17 +19,11 @@ use Shel\CriticalCSS\Service\StylesService;
 class StylesImplementation extends DataStructureImplementation
 {
 
-    /**
-     * @Flow\Inject
-     * @var HtmlAugmenter
-     */
-    protected $htmlAugmenter;
+    #[Flow\Inject]
+    protected HtmlAugmenter $htmlAugmenter;
 
-    /**
-     * @Flow\Inject
-     * @var StylesService
-     */
-    protected $stylesService;
+    #[Flow\Inject]
+    protected StylesService $stylesService;
 
     /**
      * Properties that are ignored
@@ -42,8 +36,6 @@ class StylesImplementation extends DataStructureImplementation
      * The content that will be applied the generated css class or
      * if it's multiple elements they will be wrapped with a new
      * tag and the generated class. See `fallbackTagName`.
-     *
-     * @return string
      */
     protected function getContent(): string
     {
@@ -54,8 +46,6 @@ class StylesImplementation extends DataStructureImplementation
      * The tag that will be used when content contains multiple tags
      * and needs to be wrapped for a class to be applied.
      * This behaves the same as with the HTML Augmenter.
-     *
-     * @return string
      */
     protected function getFallbackTagName(): string
     {
@@ -64,10 +54,8 @@ class StylesImplementation extends DataStructureImplementation
 
     /**
      * When this is set a selector is used instead of the generated class.
-     *
-     * @return bool|string
      */
-    protected function getSelector()
+    protected function getSelector(): bool|string
     {
         return $this->fusionValue('__meta/selector') ?? false;
     }
@@ -86,13 +74,12 @@ class StylesImplementation extends DataStructureImplementation
     }
 
     /**
-     * @return string
      * @throws FusionException
      */
     public function evaluate(): string
     {
         $content = $this->getContent();
-        $sortedChildFusionKeys = $this->sortNestedFusionKeys();
+        $sortedChildFusionKeys = $this->preparePropertyKeys($this->properties, $this->ignoreProperties);
         $selector = $this->getSelector();
         $classPrefix = $this->getClassPrefix();
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Shel\CriticalCSS\Http;
@@ -20,17 +21,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 class StyleMiddleware implements MiddlewareInterface
 {
 
-    /**
-     * @var boolean
-     * @Flow\InjectConfiguration(path="mergeStyles.enabled")
-     */
-    protected $enabled;
+    #[Flow\InjectConfiguration('mergeStyles.enabled')]
+    protected bool $enabled;
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
@@ -39,7 +32,7 @@ class StyleMiddleware implements MiddlewareInterface
             return $response;
         }
 
-        if (strpos($request->getUri()->getPath(), '/neos/') === 0) {
+        if (str_starts_with($request->getUri()->getPath(), '/neos/')) {
             return $response;
         }
 
@@ -61,7 +54,7 @@ class StyleMiddleware implements MiddlewareInterface
         }
 
         // Remove inline style tags from content
-        $content = preg_replace('/<style data-inline>.*?<\/style>/', '', $content);
+        $content = preg_replace('/<style data-inline>.*?<\/style>/s', '', $content);
 
         // Add merged styles into one new style tag to head
         $styleTag = '<style data-merged>' . implode('', $styles) . '</style>';

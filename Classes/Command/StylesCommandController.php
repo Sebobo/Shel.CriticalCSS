@@ -11,33 +11,18 @@ use GuzzleHttp\Psr7\ServerRequest;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Cli\CommandController;
 use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Mvc\ActionResponse;
-use Neos\Flow\Mvc\Controller\Arguments;
-use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Security\Exception as SecurityException;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Shel\CriticalCSS\Fusion\FusionView;
-use Shel\CriticalCSS\Service\FusionService;
 
 /**
  * The User Command Controller
- *
- * @Flow\Scope("singleton")
  */
+#[Flow\Scope('singleton')]
 class StylesCommandController extends CommandController
 {
-    /**
-     * @Flow\Inject
-     * @var SiteRepository
-     */
-    protected $siteRepository;
-
-    /**
-     * @Flow\Inject
-     * @var FusionService
-     */
-    protected $fusionService;
+    #[Flow\Inject]
+    protected SiteRepository $siteRepository;
 
     /**
      * This command returns all styles for a given site node and prototype name.
@@ -56,7 +41,7 @@ class StylesCommandController extends CommandController
         }
 
         $fusionView = new FusionView();
-        $fusionView->setControllerContext($this->createSimpleControllerContext());
+        $fusionView->assign('request', $this->createSimpleControllerRequest());
         $fusionView->setFusionPath('shelCriticalStyles');
         $fusionView->setPackageKey($site->getSiteResourcesPackageKey());
         $fusionView->assign('site', $site->getNodeName());
@@ -67,15 +52,9 @@ class StylesCommandController extends CommandController
     /**
      * Create a simple controller context which can be used to instantiate a Fusion runtime etc.
      */
-    protected function createSimpleControllerContext(): ControllerContext
+    protected function createSimpleControllerRequest(): ActionRequest
     {
         $httpRequest = new ServerRequest('POST', 'http://localhost');
-        $request = ActionRequest::fromHttpRequest($httpRequest);
-        $response = new ActionResponse();
-        $arguments = new Arguments([]);
-        $uriBuilder = new UriBuilder();
-        $uriBuilder->setRequest($request);
-
-        return new ControllerContext($request, $response, $arguments, $uriBuilder);
+        return ActionRequest::fromHttpRequest($httpRequest);
     }
 }

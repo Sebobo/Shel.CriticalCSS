@@ -29,11 +29,11 @@ class StyleCollectorImplementation extends AbstractFusionObject
         }
 
         $styles = array_unique($matches[1]);
-        $content = preg_replace('/<style data-inline>.*?<\/style>/', '', $content);
+        $content = preg_replace('/<style data-inline>.*?<\/style>/s', '', $content);
 
         $styleTag = '<style>' . implode('', $styles) . '</style>';
 
-        if (strpos($content, '</head>') !== false) {
+        if (str_contains($content, '</head>')) {
             return str_replace('</head>', $styleTag . '</head>', $content);
         }
 
