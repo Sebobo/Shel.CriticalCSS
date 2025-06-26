@@ -43,5 +43,10 @@
         "neos": {
             "package-key": "Shel.CriticalCSS"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "neos/composer-plugin": true
+        }
     }
 }

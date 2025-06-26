@@ -69,7 +69,7 @@ jobs:
           - "3306:3306"
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-    name: 'Terminal with Neos ${{ matrix.neosVersion }} test'
+    name: 'Shel.CriticalCSS with Neos ${{ matrix.neosVersion }} test'
 
     env:
       NEOS_TARGET_VERSION: ${{matrix.neosVersion}}
@@ -103,7 +103,7 @@ jobs:
 
           git -C ../${{ env.PACKAGE_FOLDER }} checkout -b build
           composer config repositories.package '{ "type": "path", "url": "../${{ env.PACKAGE_FOLDER }}", "options": { "symlink": false } }'
-          composer require --no-update --no-interaction shel/neos-terminal:"dev-build as dev-${PACKAGE_TARGET_VERSION}"
+          composer require --no-update --no-interaction shel/critical-css:"dev-build as dev-${PACKAGE_TARGET_VERSION}"
           composer require --no-update --no-interaction neos/contentgraph-doctrinedbaladapter:"~9.0.0"
 
       - name: Composer Install

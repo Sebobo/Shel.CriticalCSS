@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Shel\CriticalCSS\Tests\Functional;
@@ -8,23 +9,12 @@ namespace Shel\CriticalCSS\Tests\Functional;
  */
 
 use Neos\Fusion\Tests\Functional\FusionObjects\AbstractFusionObjectTest;
-use Neos\Fusion\View\FusionView;
 
 /**
  * Testcase for the styles object
  */
 class StylesTest extends AbstractFusionObjectTest
 {
-    /**
-     * @inheritDoc
-     */
-    protected function buildView(): FusionView
-    {
-        $view = parent::buildView();
-        $view->setPackageKey('Shel.CriticalCSS');
-        $view->setFusionPathPattern(__DIR__ . '/Fixtures/Fusion');
-        return $view;
-    }
 
     /**
      * @test
@@ -38,7 +28,8 @@ class StylesTest extends AbstractFusionObjectTest
             '<style data-inline>' .
             '.style--1d5b3fc659{color:green;font-size:12px}' .
             '</style>' .
-            '<div class="style--1d5b3fc659">foo</div>', $view->render()
+            '<div class="style--1d5b3fc659">foo</div>',
+            $view->render()
         );
     }
 
@@ -70,7 +61,8 @@ class StylesTest extends AbstractFusionObjectTest
             '<style data-inline>' .
             '.style--a01f4ebd21{font-size:7px}' .
             '</style>' .
-            '<div class="style--a01f4ebd21">foo</div>', $view->render()
+            '<div class="style--a01f4ebd21">foo</div>',
+            $view->render()
         );
     }
 
@@ -87,7 +79,8 @@ class StylesTest extends AbstractFusionObjectTest
             '.style--0e1e7d5620{color:blue}' .
             '.style--0e1e7d5620 strong{font-weight:bold}' .
             '</style>' .
-            '<div class="style--0e1e7d5620">foo <strong>bar</strong></div>', $view->render()
+            '<div class="style--0e1e7d5620">foo <strong>bar</strong></div>',
+            $view->render()
         );
     }
 
@@ -105,7 +98,8 @@ class StylesTest extends AbstractFusionObjectTest
             '.style--e2384db9d9 strong{font-weight:bold}' .
             '.style--e2384db9d9 strong em{color:pink}' .
             '</style>' .
-            '<div class="style--e2384db9d9">foo <strong>bar <em>pony</em></strong></div>', $view->render()
+            '<div class="style--e2384db9d9">foo <strong>bar <em>pony</em></strong></div>',
+            $view->render()
         );
     }
 
@@ -123,7 +117,8 @@ class StylesTest extends AbstractFusionObjectTest
             '.style--385286f4a7 strong{font-weight:bold}' .
             '.style--385286f4a7 strong em{margin-top:50px}' .
             '</style>' .
-            '<div class="style--385286f4a7">foo <strong>bar <em>pony</em></strong></div>', $view->render()
+            '<div class="style--385286f4a7">foo <strong>bar <em>pony</em></strong></div>',
+            $view->render()
         );
     }
 
@@ -139,7 +134,8 @@ class StylesTest extends AbstractFusionObjectTest
             '<style data-inline>' .
             'body{font-family:Comic Sans}' .
             '</style>' .
-            '<html><body>foo</body></html>', $view->render()
+            '<html><body>foo</body></html>',
+            $view->render()
         );
     }
 
@@ -156,7 +152,8 @@ class StylesTest extends AbstractFusionObjectTest
             '.style--3e741db00a{color:blue}' .
             '@media all{.style--3e741db00a{color:green}}' .
             '</style>' .
-            '<div class="style--3e741db00a">foo</div>', $view->render()
+            '<div class="style--3e741db00a">foo</div>',
+            $view->render()
         );
     }
 
@@ -174,7 +171,8 @@ class StylesTest extends AbstractFusionObjectTest
             '@media all{.style--751ebabd93{color:green}}' .
             '@media all{.style--751ebabd93 strong{color:yellow}}' .
             '</style>' .
-            '<div class="style--751ebabd93">foo <strong>bar</strong></div>', $view->render()
+            '<div class="style--751ebabd93">foo <strong>bar</strong></div>',
+            $view->render()
         );
     }
 
@@ -195,7 +193,8 @@ class StylesTest extends AbstractFusionObjectTest
             '.style--2d1e5ab0be strong{display:block}' .
             '}}' .
             '</style>' .
-            '<div class="style--2d1e5ab0be">foo <strong>bar</strong></div>', $view->render()
+            '<div class="style--2d1e5ab0be">foo <strong>bar</strong></div>',
+            $view->render()
         );
     }
 
@@ -217,7 +216,8 @@ class StylesTest extends AbstractFusionObjectTest
             'display:flex' .
             '}}' .
             '</style>' .
-            '<div class="style--c07e794268">foo</div>', $view->render()
+            '<div class="style--c07e794268">foo</div>',
+            $view->render()
         );
     }
 }

@@ -8,23 +8,12 @@ namespace Shel\CriticalCSS\Tests\Functional;
  */
 
 use Neos\Fusion\Tests\Functional\FusionObjects\AbstractFusionObjectTest;
-use Neos\Fusion\View\FusionView;
 
 /**
  * Testcase for the style collector object
  */
 class StyleCollectorTest extends AbstractFusionObjectTest
 {
-    /**
-     * @inheritDoc
-     */
-    protected function buildView(): FusionView
-    {
-        $view = parent::buildView();
-        $view->setPackageKey('Shel.CriticalCSS');
-        $view->setFusionPathPattern(__DIR__ . '/Fixtures/Fusion');
-        return $view;
-    }
 
     /**
      * @test
@@ -41,9 +30,9 @@ class StyleCollectorTest extends AbstractFusionObjectTest
                 <title>Test</title>
             <style>.foo{color:blue}.bar{color:green}</style></head>
             <body>
-                
+
                 <div class="foo">foo</div>
-                
+
                 <div class="bar">bar</div>
             </body>
         </html>', $view->render());
@@ -64,9 +53,9 @@ class StyleCollectorTest extends AbstractFusionObjectTest
                 <title>Test</title>
             <style>.foo{color:blue}</style></head>
             <body>
-                
+
                 <div class="foo">foo</div>
-                
+
                 <div class="foo">foo</div>
             </body>
         </html>', $view->render());
