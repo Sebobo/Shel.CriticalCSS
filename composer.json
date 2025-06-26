@@ -33,6 +33,12 @@
             "Shel\\CriticalCSS\\Tests\\": "Tests"
         }
     },
+    "scripts": {
+        "test": "../../../bin/phpunit --enforce-time-limit --bootstrap ../../Libraries/autoload.php --testdox Tests",
+        "test:ci": "phpunit --enforce-time-limit --bootstrap vendor/autoload.php --testdox Tests",
+        "codestyle": "phpstan analyse --autoload-file ../../Libraries/autoload.php",
+        "codestyle:ci": "phpstan analyse"
+    },
     "extra": {
         "neos": {
             "package-key": "Shel.CriticalCSS"
