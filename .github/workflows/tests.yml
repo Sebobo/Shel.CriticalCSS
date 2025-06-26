@@ -130,4 +130,4 @@ jobs:
       - name: Run Functional tests
         run: |
           cd ${FLOW_FOLDER}
-          bin/phpunit --colors -c Build/BuildEssentials/PhpUnit/FunctionalTests.xml Packages/Plugins/Shel.CriticalCSS/Tests/Functional/*
+          bin/phpunit --colors -c Build/BuildEssentials/PhpUnit/FunctionalTests.xml Packages/Plugins/Shel.CriticalCSS/Tests/Functional/

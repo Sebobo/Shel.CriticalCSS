@@ -29,7 +29,7 @@ class StyleCollectorImplementation extends AbstractFusionObject
 
         $styles = array_unique($matches[1]);
         /** @var string $modifiedContent */
-        $modifiedContent = preg_replace('/<style data-inline>.*?<\/style>/s', '', $content);
+        $modifiedContent = preg_replace('/[ \t]*<style data-inline>.*?<\/style>\n?/s', '', $content);
 
         if (!$modifiedContent) {
             return $content;

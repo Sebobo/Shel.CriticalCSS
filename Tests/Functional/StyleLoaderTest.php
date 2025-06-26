@@ -7,56 +7,45 @@ namespace Shel\CriticalCSS\Tests\Functional;
  * This file is part of the Shel.CriticalCSS package.
  */
 
-use Neos\Fusion\Tests\Functional\FusionObjects\AbstractFusionObjectTest;
-
 /**
  * Testcase for the style loader object
  */
-class StyleLoaderTest extends AbstractFusionObjectTest
+class StyleLoaderTest extends AbstractFusionStylingTestCase
 {
 
     /**
      * @test
      */
-    public function insertingStylesWorks()
+    public function insertingStylesWorks(): void
     {
-        $view = $this->buildView();
-
-        $view->setFusionPath('styleLoader/insertStyles');
-        $this->assertEquals(
+        $this->assertFusionPath(
             '<style data-inline>.foo {
     color: blue;
 }
-</style>', $view->render());
+</style>', 'styleLoader/insertStyles');
     }
 
     /**
      * @test
      */
-    public function prependingStylesWorks()
+    public function prependingStylesWorks(): void
     {
-        $view = $this->buildView();
-
-        $view->setFusionPath('styleLoader/prependStyles');
-        $this->assertEquals(
+        $this->assertFusionPath(
             '<style data-inline>.foo {
     color: blue;
 }
-</style><div>foo</div>', $view->render());
+</style><div>foo</div>', 'styleLoader/prependStyles');
     }
 
     /**
      * @test
      */
-    public function addStylesAsProcessWorks()
+    public function addStylesAsProcessWorks(): void
     {
-        $view = $this->buildView();
-
-        $view->setFusionPath('styleLoader/asProcess');
-        $this->assertEquals(
+        $this->assertFusionPath(
             '<style data-inline>.foo {
     color: blue;
 }
-</style><div>foo</div>', $view->render());
+</style><div>foo</div>', 'styleLoader/asProcess');
     }
 }

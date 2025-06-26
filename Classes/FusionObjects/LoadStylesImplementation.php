@@ -52,7 +52,6 @@ class LoadStylesImplementation extends AbstractFusionObject
         if ($path === null) {
             throw new InvalidVariableException('You have to define a path.', 1573317165);
         }
-
         return file_get_contents($path) ?: '';
     }
 }

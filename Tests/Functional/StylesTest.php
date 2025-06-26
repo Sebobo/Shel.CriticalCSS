@@ -8,12 +8,10 @@ namespace Shel\CriticalCSS\Tests\Functional;
  * This file is part of the Shel.CriticalCSS package.
  */
 
-use Neos\Fusion\Tests\Functional\FusionObjects\AbstractFusionObjectTest;
-
 /**
  * Testcase for the styles object
  */
-class StylesTest extends AbstractFusionObjectTest
+class StylesTest extends AbstractFusionStylingTestCase
 {
 
     /**
