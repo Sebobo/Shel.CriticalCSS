@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Shel\CriticalCSS\FusionObjects;
@@ -52,6 +53,6 @@ class LoadStylesImplementation extends AbstractFusionObject
             throw new InvalidVariableException('You have to define a path.', 1573317165);
         }
 
-        return file_get_contents($path);
+        return file_get_contents($path) ?: '';
     }
 }

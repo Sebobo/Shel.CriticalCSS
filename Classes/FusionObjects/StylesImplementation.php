@@ -14,7 +14,7 @@ use Neos\Fusion\Service\HtmlAugmenter;
 use Shel\CriticalCSS\Service\StylesService;
 
 /**
- * Adds all attributes as css styles into a style tag with a css class and adds the class to the tag
+ * Adds all attributes as CSS styles into a style tag with a CSS class and adds the class to the tag
  */
 class StylesImplementation extends DataStructureImplementation
 {
@@ -28,12 +28,12 @@ class StylesImplementation extends DataStructureImplementation
     /**
      * Properties that are ignored
      *
-     * @var array
+     * @var string[]
      */
     protected $ignoreProperties = ['__meta'];
 
     /**
-     * The content that will be applied the generated css class or
+     * The content that will be applied the generated CSS class or
      * if it's multiple elements they will be wrapped with a new
      * tag and the generated class. See `fallbackTagName`.
      */
@@ -53,7 +53,7 @@ class StylesImplementation extends DataStructureImplementation
     }
 
     /**
-     * When this is set a selector is used instead of the generated class.
+     * When this is set, a selector is used instead of the generated class.
      */
     protected function getSelector(): bool|string
     {
@@ -75,6 +75,7 @@ class StylesImplementation extends DataStructureImplementation
 
     /**
      * @throws FusionException
+     * @phpstan-ignore method.childReturnType
      */
     public function evaluate(): string
     {
@@ -87,7 +88,7 @@ class StylesImplementation extends DataStructureImplementation
         foreach ($sortedChildFusionKeys as $key) {
             $value = $this->fusionValue($key);
 
-            // When using simple nesting with `{` instead of using Neos.Fusion:DataStructure
+            // When using simple nesting with `{` instead of using Neos.Fusion:DataStructure,
             // we have to retrieve the value from the properties as the value is null.
             if ($value === null && array_key_exists($key, $this->properties)) {
                 $value = $this->properties[$key];
@@ -99,7 +100,7 @@ class StylesImplementation extends DataStructureImplementation
             $styleProperties[$key] = $value;
         }
 
-        $path = [$selector !== false ? $selector : '.' . $classPrefix . '#{$hash}'];
+        $path = [$selector !== false ? (string)$selector : '.' . $classPrefix . '#{$hash}'];
         $stylesHash = $this->stylesService->getHashForStyles($styleProperties, $path);
         $styles = $this->stylesService->renderStyles($styleProperties, $path);
         $styles = str_replace('#{$hash}', $stylesHash, $styles);
@@ -126,7 +127,7 @@ class StylesImplementation extends DataStructureImplementation
 
     /**
      * @param string $path
-     * @param array $props
+     * @param array<string, mixed> $props
      */
     protected function evaluateNestedProps(string $path, array &$props): void
     {

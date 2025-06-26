@@ -8,7 +8,9 @@ namespace Shel\CriticalCSS\Fusion;
  */
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Exception;
 use Neos\Flow\Security\Exception as SecurityException;
+use Neos\Fusion\Core\FusionConfiguration;
 use Neos\Fusion\Core\FusionGlobals;
 use Neos\Fusion\View\FusionView as BaseFusionView;
 use Neos\Fusion\Core\Runtime as FusionRuntime;
@@ -26,16 +28,13 @@ class FusionView extends BaseFusionView
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
     protected function loadFusion(): void
     {
-        $fusionAst = [];
-        try {
-            $fusionAst = $this->fusionService->getFusionConfigurationForSitePackage(
-                $this->getOption('packageKey')
-            );
-        } catch (\Exception) {
-        }
+        $fusionAst = $this->fusionService->getFusionConfigurationForSitePackage(
+            $this->getOption('packageKey')
+        );
         $this->parsedFusion = $fusionAst;
     }
 
@@ -47,19 +46,28 @@ class FusionView extends BaseFusionView
      */
     public function renderStyles(string $stylePrototypeName): string
     {
+        /** @noinspection PhpConditionAlreadyCheckedInspection */
+        /** @phpstan-ignore booleanNot.alwaysFalse */
         if (!$this->parsedFusion) {
-            $this->loadFusion();
+            try {
+                $this->loadFusion();
+            } catch (Exception) {
+                return '';
+            }
         }
-        $fusionAst = $this->parsedFusion;
-        $prototypes = $fusionAst['__prototypes'];
+        $fusionAst = $this->parsedFusion->toArray();
+        $prototypes = $fusionAst['__prototypes'] ?? [];
+
+        if (!$prototypes) {
+            return '';
+        }
 
         $arrayIterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($fusionAst));
         $outputArray = [];
         /** @noinspection PhpUnusedLocalVariableInspection */
         foreach ($arrayIterator as $sub) {
-            $subArray = $arrayIterator->getSubIterator();
-            /** @noinspection PhpParamsInspection */
-            if (!$subArray || !array_key_exists('__objectType', $subArray)) {
+            $subArray = iterator_to_array($arrayIterator->getSubIterator());
+            if (!array_key_exists('__objectType', $subArray)) {
                 continue;
             }
             $prototypeName = $subArray['__objectType'];
@@ -82,7 +90,7 @@ class FusionView extends BaseFusionView
             $fusionGlobals = FusionGlobals::fromArray(array_filter([
                 'request' => $this->assignedActionRequest,
             ]));
-            $fusionRuntime = new FusionRuntime($fusionAst, $fusionGlobals);
+            $fusionRuntime = new FusionRuntime(FusionConfiguration::fromArray($fusionAst), $fusionGlobals);
             $fusionRuntime->pushContextArray($this->variables);
             $output .= $fusionRuntime->render($this->styleRenderPath);
             $fusionRuntime->popContext();

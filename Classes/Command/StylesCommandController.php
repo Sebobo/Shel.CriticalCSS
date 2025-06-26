@@ -50,7 +50,7 @@ class StylesCommandController extends CommandController
     }
 
     /**
-     * Create a simple controller context which can be used to instantiate a Fusion runtime etc.
+     * Create a simple controller context which can be used to instantiate a Fusion runtime, etc.
      */
     protected function createSimpleControllerRequest(): ActionRequest
     {

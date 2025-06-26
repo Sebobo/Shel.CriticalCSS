@@ -11,7 +11,7 @@ use Neos\Fusion\FusionObjects\AbstractFusionObject;
 
 /**
  * Collects all style tags defined with the `Shel.CriticalCSS:Styles` object
- * and puts them in the html head or at the start of the object the collector is applied to.
+ * and puts them in the HTML head or at the start of the object the collector is applied to.
  */
 class StyleCollectorImplementation extends AbstractFusionObject
 {
@@ -22,21 +22,30 @@ class StyleCollectorImplementation extends AbstractFusionObject
     {
         $content = $this->fusionValue('content');
 
-        preg_match_all('/<style data-inline>(.*?)<\/style>/', $content, $matches);
-
-        if (!$matches) {
+        $occurrences = preg_match_all('/<style data-inline>(.*?)<\/style>/', $content, $matches);
+        if (!$occurrences) {
             return $content;
         }
 
         $styles = array_unique($matches[1]);
-        $content = preg_replace('/<style data-inline>.*?<\/style>/s', '', $content);
+        /** @var string $modifiedContent */
+        $modifiedContent = preg_replace('/<style data-inline>.*?<\/style>/s', '', $content);
+
+        if (!$modifiedContent) {
+            return $content;
+        }
 
         $styleTag = '<style>' . implode('', $styles) . '</style>';
 
-        if (str_contains($content, '</head>')) {
-            return str_replace('</head>', $styleTag . '</head>', $content);
+        if (str_contains($modifiedContent, '</head>')) {
+            /** @var string $modifiedContent */
+            $modifiedContent = str_replace('</head>', $styleTag . '</head>', $modifiedContent);
+            if ($modifiedContent) {
+                return $modifiedContent;
+            }
+            return $content;
         }
 
-        return $styleTag . $content;
+        return $styleTag . $modifiedContent;
     }
 }

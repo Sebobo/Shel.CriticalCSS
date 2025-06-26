@@ -15,13 +15,24 @@ use Neos\Flow\Annotations as Flow;
 #[Flow\Scope('singleton')]
 class StylesService
 {
+    /**
+     * @var array<string, string>
+     */
     protected array $stylesCache = [];
 
+    /**
+     * @param array<string, string> $styleProperties
+     * @param string[] $path
+     */
     public function getHashForStyles(array $styleProperties, array $path = []): string
     {
         return substr(md5(serialize($styleProperties) . serialize($path)), 0, 10);
     }
 
+    /**
+     * @param array<string, string> $styleProperties
+     * @param string[] $path
+     */
     public function renderStyles(array $styleProperties, array $path = []): string
     {
         $hash = $this->getHashForStyles($styleProperties, $path);
@@ -35,6 +46,10 @@ class StylesService
         return $styles;
     }
 
+    /**
+     * @param array<string, mixed> $properties
+     * @param string[] $path
+     */
     protected function renderProperties(array $properties, array $path = []): string
     {
         // Construct full CSS selector
@@ -52,7 +67,7 @@ class StylesService
                 if (str_starts_with($styleName, '@')) {
                     usort($childPath, self::compareSelectorParts(...));
                 }
-                $subSelectors[] = $this->renderProperties($styleValue, $childPath);
+                $subSelectors[] = $this->renderProperties((array)$styleValue, $childPath);
             } elseif ($styleValue !== null && $styleValue !== '') {
                 $styleProps[]= $styleName . ':' . $styleValue;
             }
