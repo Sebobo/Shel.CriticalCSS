@@ -8,8 +8,8 @@ namespace Shel\CriticalCSS\Service;
  */
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Fusion\Exception as FusionException;
-use Neos\Neos\Domain\Exception as DomainException;
+use Neos\Fusion\Core\FusionConfiguration;
+use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\FusionService as NeosFusionService;
 
 /**
@@ -17,30 +17,17 @@ use Neos\Neos\Domain\Service\FusionService as NeosFusionService;
 class FusionService extends NeosFusionService
 {
 
-    /**
-     * @Flow\InjectConfiguration(path="fusion.autoInclude", package="Neos.Neos")
-     * @var array
-     */
-    protected $autoIncludeConfiguration = [];
+    #[Flow\Inject]
+    protected SiteRepository $siteRepository;
 
     /**
      * Returns a merged fusion object tree in the context of the given site-package
-     *
-     * @param string $siteResourcesPackageKey
-     * @return array The merged object tree as of the given node
-     * @throws DomainException
-     * @throws FusionException
      */
-    public function getMergedFusionObjectTreeForSitePackage(string $siteResourcesPackageKey): array
+    public function getFusionConfigurationForSitePackage(string $siteResourcesPackageKey): FusionConfiguration
     {
-        $siteRootFusionPathAndFilename = sprintf($this->siteRootFusionPattern, $siteResourcesPackageKey);
+        /** @noinspection PhpUndefinedMethodInspection */
+        $site = $this->siteRepository->findOneBySiteResourcesPackageKey($siteResourcesPackageKey);
 
-        $mergedFusionCode = $this->generateNodeTypeDefinitions();
-        $mergedFusionCode .= $this->getFusionIncludes($this->prepareAutoIncludeFusion());
-        $mergedFusionCode .= $this->getFusionIncludes($this->prependFusionIncludes);
-        $mergedFusionCode .= $this->readExternalFusionFile($siteRootFusionPathAndFilename);
-        $mergedFusionCode .= $this->getFusionIncludes($this->appendFusionIncludes);
-
-        return $this->fusionParser->parse($mergedFusionCode, $siteRootFusionPathAndFilename);
+        return $this->createFusionConfigurationFromSite($site);
     }
 }

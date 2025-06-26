@@ -1,0 +1,7 @@
+prototype(Neos.Fusion:Tag).@class = 'Neos\\Fusion\\FusionObjects\\TagImplementation'
+prototype(Neos.Fusion:TestRenderer).@class = 'Neos\\Fusion\\Tests\\Functional\\View\\Fixtures\\TestRenderer'
+prototype(Neos.Fusion:DataStructure).@class = 'Neos\\Fusion\\FusionObjects\\DataStructureImplementation'
+
+prototype(Shel.CriticalCSS:LoadStyles).@class = 'Shel\\CriticalCSS\\FusionObjects\\LoadStylesImplementation'
+prototype(Shel.CriticalCSS:StyleCollector).@class = 'Shel\\CriticalCSS\\FusionObjects\\StyleCollectorImplementation'
+prototype(Shel.CriticalCSS:Styles).@class = 'Shel\\CriticalCSS\\FusionObjects\\StylesImplementation'

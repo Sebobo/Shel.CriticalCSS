@@ -7,67 +7,45 @@ namespace Shel\CriticalCSS\Tests\Functional;
  * This file is part of the Shel.CriticalCSS package.
  */
 
-use Neos\Fusion\Tests\Functional\FusionObjects\AbstractFusionObjectTest;
-use Neos\Fusion\View\FusionView;
-
 /**
  * Testcase for the style loader object
  */
-class StyleLoaderTest extends AbstractFusionObjectTest
+class StyleLoaderTest extends AbstractFusionStylingTestCase
 {
+
     /**
-     * @inheritDoc
+     * @test
      */
-    protected function buildView(): FusionView
+    public function insertingStylesWorks(): void
     {
-        $view = parent::buildView();
-        $view->setPackageKey('Shel.CriticalCSS');
-        $view->setFusionPathPattern(__DIR__ . '/Fixtures/Fusion');
-        return $view;
+        $this->assertFusionPath(
+            '<style data-inline>.foo {
+    color: blue;
+}
+</style>', 'styleLoader/insertStyles');
     }
 
     /**
      * @test
      */
-    public function insertingStylesWorks()
+    public function prependingStylesWorks(): void
     {
-        $view = $this->buildView();
-
-        $view->setFusionPath('styleLoader/insertStyles');
-        $this->assertEquals(
+        $this->assertFusionPath(
             '<style data-inline>.foo {
     color: blue;
 }
-</style>', $view->render());
+</style><div>foo</div>', 'styleLoader/prependStyles');
     }
 
     /**
      * @test
      */
-    public function prependingStylesWorks()
+    public function addStylesAsProcessWorks(): void
     {
-        $view = $this->buildView();
-
-        $view->setFusionPath('styleLoader/prependStyles');
-        $this->assertEquals(
+        $this->assertFusionPath(
             '<style data-inline>.foo {
     color: blue;
 }
-</style><div>foo</div>', $view->render());
-    }
-
-    /**
-     * @test
-     */
-    public function addStylesAsProcessWorks()
-    {
-        $view = $this->buildView();
-
-        $view->setFusionPath('styleLoader/asProcess');
-        $this->assertEquals(
-            '<style data-inline>.foo {
-    color: blue;
-}
-</style><div>foo</div>', $view->render());
+</style><div>foo</div>', 'styleLoader/asProcess');
     }
 }

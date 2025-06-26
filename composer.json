@@ -12,7 +12,8 @@
       "Components"
     ],
     "require": {
-        "neos/neos": "~7.0 || ~8.0 || dev-master"
+        "php": ">=8.2",
+        "neos/neos": "^9.0"
     },
     "authors": [
       {
@@ -32,9 +33,20 @@
             "Shel\\CriticalCSS\\Tests\\": "Tests"
         }
     },
+    "scripts": {
+        "test": "../../../bin/phpunit --enforce-time-limit --bootstrap ../../Libraries/autoload.php --testdox Tests",
+        "test:ci": "phpunit --enforce-time-limit --bootstrap vendor/autoload.php --testdox Tests",
+        "codestyle": "phpstan analyse --autoload-file ../../Libraries/autoload.php",
+        "codestyle:ci": "phpstan analyse"
+    },
     "extra": {
         "neos": {
             "package-key": "Shel.CriticalCSS"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "neos/composer-plugin": true
         }
     }
 }

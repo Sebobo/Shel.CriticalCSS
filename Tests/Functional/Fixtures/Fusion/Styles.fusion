@@ -1,7 +1,3 @@
-prototype(Shel.CriticalCSS:Styles).@class = 'Shel\\CriticalCSS\\FusionObjects\\StylesImplementation'
-prototype(Neos.Fusion:DataStructure).@class = 'Neos\\Fusion\\FusionObjects\\DataStructureImplementation'
-prototype(Neos.Fusion:TestRenderer).@class = 'Neos\\Fusion\\Tests\\Functional\\View\\Fixtures\\TestRenderer'
-
 styles.basic = Shel.CriticalCSS:Styles {
     @content = '<div>foo</div>'
     color = 'green'

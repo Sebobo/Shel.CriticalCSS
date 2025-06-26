@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Shel\CriticalCSS\Http;
@@ -15,22 +16,14 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * The HTTP component to collect all inline styles and merge them into the html head
+ * The HTTP component to collect all inline styles and merge them into the HTML head
  */
 class StyleMiddleware implements MiddlewareInterface
 {
 
-    /**
-     * @var boolean
-     * @Flow\InjectConfiguration(path="mergeStyles.enabled")
-     */
-    protected $enabled;
+    #[Flow\InjectConfiguration('mergeStyles.enabled')]
+    protected bool $enabled = false;
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     * @return ResponseInterface
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
@@ -39,17 +32,16 @@ class StyleMiddleware implements MiddlewareInterface
             return $response;
         }
 
-        if (strpos($request->getUri()->getPath(), '/neos/') === 0) {
+        if (str_starts_with($request->getUri()->getPath(), '/neos/')) {
             return $response;
         }
 
-        $content = $response->getBody()->getContents();
+        $renderedContent = $response->getBody()->getContents();
         $response->getBody()->rewind();
 
         // Retrieve all inline style tags
-        preg_match_all('/<style data-inline>(.*?)<\/style>/', $content, $matches);
-
-        if (!$matches) {
+        $foundOccurrences = preg_match_all('/<style data-inline>(.*?)<\/style>/', $renderedContent, $matches);
+        if (!$foundOccurrences) {
             return $response;
         }
 
@@ -61,11 +53,15 @@ class StyleMiddleware implements MiddlewareInterface
         }
 
         // Remove inline style tags from content
-        $content = preg_replace('/<style data-inline>.*?<\/style>/', '', $content);
+        $content = preg_replace('/<style data-inline>.*?<\/style>/s', '', $renderedContent);
 
-        // Add merged styles into one new style tag to head
-        $styleTag = '<style data-merged>' . implode('', $styles) . '</style>';
-        $content = str_replace('</head>', $styleTag . '</head>', $content);
+        if ($content) {
+            // Add merged styles into one new style tag to head
+            $styleTag = '<style data-merged>' . implode('', $styles) . '</style>';
+            $content = str_replace('</head>', $styleTag . '</head>', $content);
+        } else {
+            $content = $renderedContent;
+        }
 
         return $response->withBody(ContentStream::fromContents($content));
     }

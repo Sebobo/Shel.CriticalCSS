@@ -10,7 +10,8 @@ namespace Shel\CriticalCSS\Fusion;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Exception;
 use Neos\Flow\Security\Exception as SecurityException;
-use Neos\FluidAdaptor\View\TemplateView;
+use Neos\Fusion\Core\FusionConfiguration;
+use Neos\Fusion\Core\FusionGlobals;
 use Neos\Fusion\View\FusionView as BaseFusionView;
 use Neos\Fusion\Core\Runtime as FusionRuntime;
 use Shel\CriticalCSS\Service\FusionService;
@@ -20,30 +21,20 @@ use Shel\CriticalCSS\Service\FusionService;
  */
 class FusionView extends BaseFusionView
 {
-    protected $styleRenderPath = 'shelCriticalStyles';
+    protected string $styleRenderPath = 'shelCriticalStyles';
 
-    /**
-     * @Flow\Inject
-     * @var FusionService
-     */
-    protected $fusionService;
-
-    /**
-     * @Flow\Inject
-     * @var TemplateView
-     */
-    protected $fallbackView;
+    #[Flow\Inject]
+    protected FusionService $fusionService;
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
     protected function loadFusion(): void
     {
-        $fusionAst = [];
-        try {
-            $fusionAst = $this->fusionService->getMergedFusionObjectTreeForSitePackage($this->getOption('packageKey'));
-        } catch (Exception $e) {
-        }
+        $fusionAst = $this->fusionService->getFusionConfigurationForSitePackage(
+            $this->getOption('packageKey')
+        );
         $this->parsedFusion = $fusionAst;
     }
 
@@ -51,24 +42,31 @@ class FusionView extends BaseFusionView
      * Iterates through the Fusion AST and renders all instantiated
      * objects of the given prototype and returns the concatenated results as string.
      *
-     * @param string $stylePrototypeName
-     * @return string
      * @throws SecurityException
      */
     public function renderStyles(string $stylePrototypeName): string
     {
+        /** @noinspection PhpConditionAlreadyCheckedInspection */
+        /** @phpstan-ignore booleanNot.alwaysFalse */
         if (!$this->parsedFusion) {
-            $this->loadFusion();
+            try {
+                $this->loadFusion();
+            } catch (Exception) {
+                return '';
+            }
         }
-        $fusionAst = $this->parsedFusion;
-        $prototypes = $fusionAst['__prototypes'];
+        $fusionAst = $this->parsedFusion->toArray();
+        $prototypes = $fusionAst['__prototypes'] ?? [];
+
+        if (!$prototypes) {
+            return '';
+        }
 
         $arrayIterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($fusionAst));
         $outputArray = [];
         /** @noinspection PhpUnusedLocalVariableInspection */
         foreach ($arrayIterator as $sub) {
-            $subArray = $arrayIterator->getSubIterator();
-            /** @noinspection PhpParamsInspection */
+            $subArray = iterator_to_array($arrayIterator->getSubIterator());
             if (!array_key_exists('__objectType', $subArray)) {
                 continue;
             }
@@ -77,7 +75,7 @@ class FusionView extends BaseFusionView
                 ($prototypeName
                     && array_key_exists($prototypeName, $prototypes)
                     && array_key_exists('__prototypeChain', $prototypes[$prototypeName])
-                    && in_array($stylePrototypeName, $prototypes[$prototypeName]['__prototypeChain']))) {
+                    && in_array($stylePrototypeName, $prototypes[$prototypeName]['__prototypeChain'], true))) {
                 $props = iterator_to_array($subArray);
                 $props['__meta']['stylesOnly'] = true;
                 $outputArray[] = $props;
@@ -89,7 +87,10 @@ class FusionView extends BaseFusionView
         // Render each found instantiated prototype
         foreach ($outputArray as $props) {
             $fusionAst[$this->styleRenderPath] = $props;
-            $fusionRuntime = new FusionRuntime($fusionAst, $this->controllerContext);
+            $fusionGlobals = FusionGlobals::fromArray(array_filter([
+                'request' => $this->assignedActionRequest,
+            ]));
+            $fusionRuntime = new FusionRuntime(FusionConfiguration::fromArray($fusionAst), $fusionGlobals);
             $fusionRuntime->pushContextArray($this->variables);
             $output .= $fusionRuntime->render($this->styleRenderPath);
             $fusionRuntime->popContext();

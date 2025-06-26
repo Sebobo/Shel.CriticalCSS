@@ -1,6 +1,3 @@
-prototype(Shel.CriticalCSS:StyleCollector).@class = 'Shel\\CriticalCSS\\FusionObjects\\StyleCollectorImplementation'
-prototype(Neos.Fusion:TestRenderer).@class = 'Neos\\Fusion\\Tests\\Functional\\View\\Fixtures\\TestRenderer'
-
 styleCollector.collectMultipleStyles = Shel.CriticalCSS:StyleCollector {
     content = '
         <html>

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Shel\CriticalCSS\FusionObjects;
@@ -17,8 +18,6 @@ class LoadStylesImplementation extends AbstractFusionObject
 {
     /**
      * HTML content that should be processed (optional)
-     *
-     * @return string|null
      */
     protected function getContent(): ?string
     {
@@ -27,22 +26,17 @@ class LoadStylesImplementation extends AbstractFusionObject
 
     /**
      * Path to a CSS resource
-     *
-     * @return string
      */
     protected function getPath(): string
     {
         return $this->fusionValue('path');
     }
 
-    /**
-     * @return string
-     */
     public function evaluate(): string
     {
         try {
             $styles = $this->loadResourceContent($this->getPath());
-        } catch (InvalidVariableException $e) {
+        } catch (InvalidVariableException) {
             throw new \InvalidArgumentException('Resource ' . $this->getPath() . ' cannot be loaded!', 1573314641);
         }
 
@@ -51,8 +45,6 @@ class LoadStylesImplementation extends AbstractFusionObject
 
     /**
      * Loads the content of a resource and returns it as string
-     *
-     * @return string Content of the resource
      * @throws InvalidVariableException
      */
     public function loadResourceContent(?string $path): string
@@ -60,7 +52,6 @@ class LoadStylesImplementation extends AbstractFusionObject
         if ($path === null) {
             throw new InvalidVariableException('You have to define a path.', 1573317165);
         }
-
-        return file_get_contents($path);
+        return file_get_contents($path) ?: '';
     }
 }
